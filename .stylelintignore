@@ -1,0 +1,9 @@
+*.tsx
+*.jsx
+*.ts
+*.js
+*.md
+*.svg
+*.html
+node_modules/**
+**/*.d.ts

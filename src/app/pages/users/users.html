@@ -1,0 +1,35 @@
+<ion-content class="ion-padding">
+  <ion-header class="ion-no-border pad1"> User's data </ion-header>
+
+  <ion-loading [showBackdrop]="true" [duration]="3000" [hidden]="isUsersLoad">
+    <ion-content>
+      <ion-item>
+        <ion-label>Loading users data...</ion-label>
+      </ion-item>
+    </ion-content>
+  </ion-loading>
+
+  <ion-list [hidden]="!isUsersLoad">
+    <ion-item *ngFor="let user of data | async">
+      <ion-img
+        [src]="user.picture.large"
+        style="width: 100px; margin-right: 20px"
+      ></ion-img>
+      <ion-card [color]="colors | randomColor">
+        <ion-card-header>
+          <ion-card-title>{{user.name}}</ion-card-title>
+          <ion-card-subtitle>{{user.gender}}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          Card Content Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Sunt facilis at ipsum reiciendis, non totam aliquid voluptate tempora
+          dolorum voluptas, consequatur minus eos, deleniti ea corporis qui
+          vitae animi quis!
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+  <!-- <ion-loading [hidden]="isUsersLoad">dddd</ion-loading> -->
+</ion-content>
