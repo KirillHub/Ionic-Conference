@@ -2,11 +2,10 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
 
-import { UsersPage } from "./users";
-import { UsersPageRoutingModule } from "./users-routing.module";
+import { UsersDetailsPage } from "./user-details";
 import { HttpClientModule } from "@angular/common/http";
 import { RandomColorPipe } from "../../../shared/pipes/colorRandomizer.pipe";
-import { NavigationService } from "../../services/navigation.service";
+import { UserDetailsPageRoutingModule } from "./user-details-routing.module";
 import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-route-btn.module";
 
 @NgModule({
@@ -14,10 +13,9 @@ import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-
     CommonModule,
     IonicModule,
     HttpClientModule,
-    UsersPageRoutingModule,
-    BackRouteBtnModule,
+    UserDetailsPageRoutingModule,
+    BackRouteBtnModule
   ],
-  declarations: [UsersPage, RandomColorPipe],
-  providers: [NavigationService],
+  declarations: [UsersDetailsPage],
 })
-export class UsersModule {}
+export class UserDetailsModule {}

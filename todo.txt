@@ -1,3 +1,57 @@
 1. Add map page
 2. Страница юзера (доработать функционал)
 3. Fake Store (новая стр + вывод fake данных)
+
+
+смотри, я хочу создать общий компонент для angular проекта. Вот его модуль:
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { IonicModule } from "@ionic/angular";
+import { BackRouteBtn } from "./back-route-btn";
+import { NavigationService } from "../../../services/navigation.service";
+import { HttpClientModule } from "@angular/common/http";
+
+@NgModule({
+  imports: [CommonModule, IonicModule, HttpClientModule],
+  declarations: [BackRouteBtn],
+  providers: [NavigationService],
+})
+export class BackRouteBtnModule {}
+
+и сам ts файл
+import { map } from "rxjs/operators";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { Observable, of } from "rxjs";
+import { NavigationService } from "../../../services/navigation.service";
+
+@Component({
+  selector: "back-route-btn",
+  templateUrl: "back-route-btn.html",
+  styleUrls: ["./back-route-btn.scss"],
+})
+export class BackRouteBtn implements AfterViewInit {
+  navHistory: string[] = [];
+
+  constructor(private navigation: NavigationService) {
+    this.navigation.startSaveHistory();
+  }
+
+  ngAfterViewInit(): void {
+    this.navHistory = this.navigation.getHistory();
+  }
+}
+
+дальше я добавляю модуль BackRouteBtnModule в другой модульный компонент
+@NgModule({
+  imports: [
+    CommonModule,
+    IonicModule,
+    HttpClientModule,
+    UsersPageRoutingModule,
+    BackRouteBtnModule,
+  ],
+  declarations: [UsersPage, RandomColorPipe],
+  providers: [NavigationService],
+})
+export class UsersModule {}
+и хочу применить <back-route-btn> в html. Но мне приходит ошибка

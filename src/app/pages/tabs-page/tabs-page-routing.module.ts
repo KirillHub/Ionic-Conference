@@ -78,6 +78,13 @@ const routes: Routes = [
             loadChildren: () =>
               import("../users/users.module").then((m) => m.UsersModule),
           },
+          {
+            path: "user-details/:userId",
+            loadChildren: () =>
+              import("../user-details/user-details.module").then(
+                (m) => m.UserDetailsModule
+              ),
+          },
         ],
       },
       {

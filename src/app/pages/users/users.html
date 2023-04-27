@@ -1,6 +1,8 @@
 <ion-content class="ion-padding">
   <ion-header class="ion-no-border pad1"> User's data </ion-header>
 
+  <ion-button (click)="getTestStoreData()">click</ion-button>
+
   <ion-loading [showBackdrop]="true" [duration]="3000" [hidden]="isUsersLoad">
     <ion-content>
       <ion-item>
@@ -9,27 +11,32 @@
     </ion-content>
   </ion-loading>
 
-  <ion-list [hidden]="!isUsersLoad">
-    <ion-item *ngFor="let user of data | async">
-      <ion-img
-        [src]="user.picture.large"
-        style="width: 100px; margin-right: 20px"
-      ></ion-img>
-      <ion-card [color]="colors | randomColor">
-        <ion-card-header>
-          <ion-card-title>{{user.name}}</ion-card-title>
-          <ion-card-subtitle>{{user.gender}}</ion-card-subtitle>
-        </ion-card-header>
+  <ion-grid [hidden]="!isUsersLoad">
+    <ion-row>
+      <ion-col size="12" size-md="6" *ngFor="let user of usersData | async">
+        <ion-item routerLink="/app/tabs/users/user-details/{{user.id}}">
+          <ion-card [color]="colors | randomColor">
+            <ion-card-header>
+              <ion-card-title>{{user.name}}</ion-card-title>
+              <ion-card-subtitle>{{user.gender}}</ion-card-subtitle>
+            </ion-card-header>
 
-        <ion-card-content>
-          Card Content Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-          Sunt facilis at ipsum reiciendis, non totam aliquid voluptate tempora
-          dolorum voluptas, consequatur minus eos, deleniti ea corporis qui
-          vitae animi quis!
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-  </ion-list>
+            <ion-card-content>
+              <ion-img
+                [src]="user.picture.large"
+                style="width: 100px; margin-right: 20px"
+              ></ion-img>
+
+              Card Content Lorem ipsum dolor sit, amet consectetur adipisicing
+              elit. Sunt facilis at ipsum reiciendis, non totam aliquid
+              voluptate tempora dolorum voluptas, consequatur minus eos,
+              deleniti ea corporis qui vitae animi quis!
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <!-- <ion-loading [hidden]="isUsersLoad">dddd</ion-loading> -->
 </ion-content>

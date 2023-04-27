@@ -13,7 +13,7 @@ import { Observable, of } from "rxjs";
 import { UserResult } from "../../interfaces/user-profile";
 import { ionicColors } from "../../../shared/utils/constants";
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from "@angular/core";
-import {} from 'jasmine';
+import {} from "jasmine";
 
 describe("UsersPage", () => {
   let component: UsersPage;
@@ -66,7 +66,7 @@ describe("UsersPage", () => {
     expect(component).toBeTruthy();
   });
 
-  it
+  it;
   //   it("should initialize the data", () => {
   //     expect(component.isUsersLoad).toBe(true);
   //     expect(component.data).toEqual(of(testData));
