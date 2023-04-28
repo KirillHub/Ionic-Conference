@@ -6,19 +6,21 @@ export interface UserProfile {
   phone: string;
 }
 
-interface Picture { // no implement (only large)
+interface Picture {
+  // no implement (only large)
   large: string;
   medium: string;
   thumbnail: string;
 }
 
 export interface UserResult {
+  id: number;
   gender: string;
   name: string;
   email: string;
   phone: string;
   picture: {
-    large: string
+    large: string;
   };
 }
 

@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ErrorService {
   error$ = new Subject<string>();
 
   handle = (message: string | unknown) => this.error$.next(message as string);
 
-  clear = () => this.error$.next('');
+  clear = () => this.error$.next("");
+
+  isArrayEmpty = (message: string | unknown) =>
+    this.error$.next(message as string);
 }

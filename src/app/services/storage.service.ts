@@ -1,30 +1,35 @@
 import { Injectable } from "@angular/core";
-
+import { map, switchMap } from "rxjs/operators";
+import { Observable, firstValueFrom, of } from "rxjs";
 import { Storage } from "@ionic/storage-angular";
+import { UserResult } from "../interfaces/user-profile";
+import { UserService } from "./user.service";
+
+const STORAGE_KEY = "mylist";
 
 @Injectable({
   providedIn: "root",
 })
 export class StorageService {
   private _storage: Storage | null = null;
+  private usersData$: Observable<UserResult[]> = of<UserResult[]>([]);
 
-  constructor(private storage: Storage) {
-    this.init();
+  constructor(private storage: Storage) {}
+
+  getData() {
+    console.log("GET DATA");
+    return this.storage.get(STORAGE_KEY) || [];
   }
 
-  async init() {
-    // If using, define drivers here: await this.storage.defineDriver(/*...*/);
-    const storage = await this.storage.create();
-    this._storage = storage;
+  async addData(item: any) {
+    const storedData = (await this.storage.get(STORAGE_KEY)) || [];
+    storedData.push(item);
+    return this.storage.set(STORAGE_KEY, storedData);
   }
 
-  // Create and expose methods that users of this service can
-  // call, for example:
-  public set(key: string, value: any) {
-    this._storage?.set(key, value);
-  }
-
-  public get(key: string){
-    this._storage?.get(key)
+  async removeData(index: number) {
+    const storedData: any[] = (await this.storage.get(STORAGE_KEY)) || [];
+    storedData.splice(index, 1);
+    return this.storage.set(STORAGE_KEY, storedData);
   }
 }

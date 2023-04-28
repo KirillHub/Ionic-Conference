@@ -7,47 +7,61 @@ import { ionicColors } from "../../../shared/utils/constants";
 import { NavigationService } from "../../services/navigation.service";
 import { UserData } from "../../providers/user-data";
 import { StorageService } from "../../services/storage.service";
+import { UserDataStorageService } from "../../services/userStorage.service";
 
 @Component({
   selector: "users-data",
   templateUrl: "users.html",
   styleUrls: ["./users.scss"],
 })
-export class UsersPage implements OnInit {
+export class UsersPage implements OnInit, AfterViewInit {
+  usersDataStream$: Observable<UserResult[]> = of([]);
   isUsersLoad: boolean;
-  usersData: Observable<UserResult[]> = of([]);
+  usersData$: Observable<UserResult[]> = of([]);
+  usersData: UserResult[] = [];
   colors = ionicColors;
   navHistory: string[] = [];
-  _testData = {
-    test: "test",
-  };
 
   constructor(
     private loadUserData: UserService,
-    private userProvider: UserData,
-    private testStorage: StorageService
+    private userDataService: UserDataStorageService
   ) {}
 
   ngOnInit(): void {
-    this.loadUserData.getUsers().subscribe((d) => this.enrollUsers(d));
-
-    this.testStorage.init();
-    this.testStorage.set("testData", this._testData);
-    // .pipe(map((data) => console.log(data)));
+    this.setUsersDataToStorage();
+    this.loadUserDataFromStorage();
   }
 
-  async setUserData() {
-    await this.userProvider.setUsersData(this.usersData);
+  ngAfterViewInit(): void {}
+
+  async setUsersDataToStorage() {
+    this.usersData$ = this.loadUserData.getUsers();
+    this.usersData$.subscribe((d) => {
+      this.userDataService.setUsersData(d);
+    });
   }
 
-  async enrollUsers(data: UserResult[]) {
-    data.length !== 0 ? (this.isUsersLoad = true) : undefined;
-    this.usersData = of(data);
-    // console.log(this.data);
+  async loadUserDataFromStorage() {
+    this.usersDataStream$ = this.userDataService.getUsersData();
   }
 
-  getTestStoreData() {
-    console.log(this.testStorage.get("testData"));
-    // console.log(this.navigation);
+  async onDeleteClick(event: Event, userId: number) {
+    event.stopPropagation();
+    event.preventDefault();
+    console.log(userId);
+    this.removeUserFromStorage(userId);
+  }
+
+  async selectedUserId(userId: number) {
+    console.log(`userId ${userId}`);
+    this.userDataService.userSeelectedId.next(userId);
+  }
+
+  async removeUserFromStorage(userId: number) {
+    this.usersDataStream$ = this.userDataService.removeUserById(userId);
+  }
+
+  async onRefreshClick() {
+    this.usersDataStream$ = this.loadUserData.getUsers();
   }
 }

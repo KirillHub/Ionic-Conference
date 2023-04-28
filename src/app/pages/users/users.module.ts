@@ -8,6 +8,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { RandomColorPipe } from "../../../shared/pipes/colorRandomizer.pipe";
 import { NavigationService } from "../../services/navigation.service";
 import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-route-btn.module";
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-
     HttpClientModule,
     UsersPageRoutingModule,
     BackRouteBtnModule,
+    TranslateModule
   ],
   declarations: [UsersPage, RandomColorPipe],
   providers: [NavigationService],

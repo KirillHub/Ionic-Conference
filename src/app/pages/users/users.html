@@ -1,7 +1,15 @@
 <ion-content class="ion-padding">
-  <ion-header class="ion-no-border pad1"> User's data </ion-header>
-
-  <ion-button (click)="getTestStoreData()">click</ion-button>
+  <ion-header>
+    <ion-header class="ion-no-border pad1"> Users data </ion-header>
+    <!-- <ion-header>{{ "test_name_here" | translate}}</ion-header>
+    <ion-header>{{ "more_tests_with_name" | translate}}</ion-header> -->
+    <ion-item>
+      <ion-button (click)="onRefreshClick()">
+        {{"reboot users data" | uppercase}}
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-header>
 
   <ion-loading [showBackdrop]="true" [duration]="3000" [hidden]="isUsersLoad">
     <ion-content>
@@ -11,14 +19,40 @@
     </ion-content>
   </ion-loading>
 
-  <ion-grid [hidden]="!isUsersLoad">
+  <ion-grid [hidden]="!(usersDataStream$ | async)?.length">
     <ion-row>
-      <ion-col size="12" size-md="6" *ngFor="let user of usersData | async">
-        <ion-item routerLink="/app/tabs/users/user-details/{{user.id}}">
+      <ion-col
+        size="12"
+        size-md="6"
+        *ngFor="let user of usersDataStream$ | async"
+      >
+        <!-- <ion-col size="12" size-md="6" *ngFor="let user of usersData"> -->
+        <ion-item
+          routerLink="/app/tabs/users/user-details/{{user.id}}"
+          (click)="selectedUserId(user.id)"
+        >
           <ion-card [color]="colors | randomColor">
             <ion-card-header>
-              <ion-card-title>{{user.name}}</ion-card-title>
-              <ion-card-subtitle>{{user.gender}}</ion-card-subtitle>
+              <ion-grid>
+                <ion-row justify-content-between>
+                  <ion-col>
+                    <ion-card-title>{{ user.name }}</ion-card-title>
+                    <ion-card-subtitle>{{ user.gender }}</ion-card-subtitle>
+                  </ion-col>
+                  <ion-col-auto>
+                    <ion-button
+                      fill="clear"
+                      (click)="onDeleteClick($event, user.id)"
+                    >
+                      <ion-icon
+                        class="icon-large"
+                        slot="icon-only"
+                        name="close"
+                      ></ion-icon>
+                    </ion-button>
+                  </ion-col-auto>
+                </ion-row>
+              </ion-grid>
             </ion-card-header>
 
             <ion-card-content>
@@ -40,3 +74,22 @@
 
   <!-- <ion-loading [hidden]="isUsersLoad">dddd</ion-loading> -->
 </ion-content>
+
+<!-- <ion-list>
+  <ion-item-sliding *ngFor="let name of listData; let i = index;">
+    <ion-item>
+      <ion-label>{{name}}</ion-label>
+    </ion-item>
+    <ion-item-options side="end">
+      <ion-item-option color="primary" (click)="removeItem(i)">
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>
+
+<ion-fab vertical="top" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="addData()" color="secondary">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab> -->

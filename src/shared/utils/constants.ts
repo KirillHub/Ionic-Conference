@@ -1,5 +1,5 @@
 export const ionicColors = [
-  "primary",
+  // "primary",
   "secondary",
   "tertiary",
   "success",

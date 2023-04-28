@@ -1,0 +1,22 @@
+<ion-content>
+  <div class="ion-padding">
+    ddddd
+    <form>
+      <ion-row>
+        <ion-col sizeXl="6" size="12">
+          <ion-card>
+            <ion-card-header *ngIf="isAddUserRoute">
+              {{'add_user' | translate}}
+            </ion-card-header>
+            <ion-card-header *ngIf="isEditUserRoute">
+              {{'edit_user' | translate}}
+            </ion-card-header>
+
+            something
+
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+</ion-content>

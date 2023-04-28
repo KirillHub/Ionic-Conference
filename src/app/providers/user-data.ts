@@ -58,25 +58,6 @@ export class UserData {
     return this.storage.set("username", username);
   }
 
-  async setUsersData(userData$: Observable<UserResult[]>): Promise<any[]> {
-    const usersDt = await firstValueFrom(userData$);
-    this.storage.set("usersData", { hellow: 123444 });
-    return usersDt;
-    /*
-    return (
-      userData
-        .pipe(
-          map((data) => JSON.stringify(data)),
-          switchMap((serializedData) =>
-            this.storage.set("user_data", serializedData)
-          )
-        )
-        // .firstValueFrom();
-
-    );
-   */
-  }
-
   async getUsername(): Promise<string> {
     const value = await this.storage.get("username");
     return value;
