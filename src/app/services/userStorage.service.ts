@@ -28,7 +28,7 @@ import { ErrorService } from "./error.service";
 export class UserDataStorageService {
   private storageReady = new BehaviorSubject(false);
   STORAGE_USER_KEY = "usersData";
-  userSeelectedId: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  userSelectedId: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor(private storage: Storage, private errorService: ErrorService) {
     this.init(); // init storage

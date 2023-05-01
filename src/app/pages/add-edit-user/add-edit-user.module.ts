@@ -6,6 +6,7 @@ import { AddEditUserPage } from "./add-edit-user";
 import { AddEditUserPageRoutingModule } from "./add-edit-user-routing.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslateModule } from "@ngx-translate/core";
+import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-route-btn.module";
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { TranslateModule } from "@ngx-translate/core";
     AddEditUserPageRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule
+    TranslateModule,
+    BackRouteBtnModule
   ],
   declarations: [AddEditUserPage],
 })

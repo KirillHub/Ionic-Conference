@@ -27,7 +27,7 @@ export class UsersDetailsPage implements OnInit {
 
   async ionViewWillEnter() {
     console.log("We in user-details");
-    this.userDataService.userSeelectedId.subscribe((userId) => {
+    this.userDataService.userSelectedId.subscribe((userId) => {
       this.userId = userId;
     });
 
@@ -36,17 +36,4 @@ export class UsersDetailsPage implements OnInit {
     });
   }
 
-  async getUserById() {
-    // console.log("We in user-details");
-    // this.userDataService.userSeelectedId.subscribe((userId) => {
-    //   this.userId = userId;
-    // });
-    // console.log(this.userId);
-    // this.userData = await this.userDataService.getUserById(this.userId);
-    // this.picture = this.userData.picture.large;
-    // console.log(this.userData.picture.large);
-    // console.log(this.userId);
-    // let a = await this.userDataService.getUserById(userId);
-    // console.log(a);
-  }
 }

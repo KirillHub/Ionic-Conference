@@ -48,7 +48,7 @@ import { GlobalErrorComponent } from "./shared/components/error-data/error-data.
   providers: [
     InAppBrowser,
     TranslateService,
-    { provide: ErrorHandler, useClass: ErrorService }, //TODO later fix
+    // { provide: ErrorHandler, useClass: ErrorHandler }, //TODO later fix
   ],
   bootstrap: [AppComponent],
 })

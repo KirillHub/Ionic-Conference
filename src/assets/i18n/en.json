@@ -1,7 +1,17 @@
 {
-  "test_name_here": "Test name Here",
-  "more_tests_with_name": "more tests with name",
   "edit_user": "Edit user information",
-  "add_user": "Add new user"
+  "add_user": "Add new user",
+  "edit_user_data": "Edit user data",
+  "create_new_user": "Create new user",
+  "delete_company": "Delete company",
+  "insert_user_name": "Insert user name",
+  "user_name": "User name",
+  "user_gender": "User gender",
+  "insert_user_gender": "Insert user gender",
 
+  "user_name_missed_error": "User name missed error",
+  "user_gender_missed_error": "User gender missed error",
+  "user_picture_missed_error": "User picture missed error",
+
+  "sure_want_delete_company": "Sure want delete company?"
 }

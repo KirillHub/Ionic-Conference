@@ -10,6 +10,7 @@ import { SplashScreen } from "@capacitor/splash-screen";
 import { Storage } from "@ionic/storage-angular";
 
 import { UserData } from "./providers/user-data";
+import { LanguageService } from "./services/language.service";
 
 @Component({
   selector: "app-root",
@@ -55,12 +56,14 @@ export class AppComponent implements OnInit {
     private storage: Storage,
     private userData: UserData,
     private swUpdate: SwUpdate,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private languageService: LanguageService
   ) {
     this.initializeApp();
   }
 
   async ngOnInit() {
+    this.languageService.setInitialAppLanguage();
     await this.storage.create();
     this.checkLoginStatus();
     this.listenForLoginEvents();
