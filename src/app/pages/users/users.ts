@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { combineLatest, firstValueFrom, Observable, of, pipe } from "rxjs";
 import { UserService } from "../../services/user.service";
 import { UserResult } from "../../interfaces/user-profile";
-import { ionicColors } from "../../../shared/utils/constants";
+import { ionicColors } from "../../shared/utils/constants/constants";
 import { UserDataStorageService } from "../../services/userStorage.service";
 import { TranslateService } from "@ngx-translate/core";
 import { AlertService } from "../../services/alert.service";

@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { UserService } from "../../services/user.service";
 import { UserResult } from "../../interfaces/user-profile";
-import { ionicColors } from "../../../shared/utils/constants";
+import { ionicColors } from "../../shared/utils/constants/constants";
 import { UserDataStorageService } from "../../services/userStorage.service";
 
 @Component({
@@ -35,5 +35,4 @@ export class UsersDetailsPage implements OnInit {
       this.userData = data;
     });
   }
-
 }

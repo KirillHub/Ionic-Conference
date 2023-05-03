@@ -4,7 +4,7 @@ import { IonicModule } from "@ionic/angular";
 
 import { UsersDetailsPage } from "./user-details";
 import { HttpClientModule } from "@angular/common/http";
-import { RandomColorPipe } from "../../../shared/pipes/colorRandomizer.pipe";
+import { RandomColorPipe } from "../../shared/pipes/colorRandomizer.pipe";
 import { UserDetailsPageRoutingModule } from "./user-details-routing.module";
 import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-route-btn.module";
 
@@ -14,7 +14,7 @@ import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-
     IonicModule,
     HttpClientModule,
     UserDetailsPageRoutingModule,
-    BackRouteBtnModule
+    BackRouteBtnModule,
   ],
   declarations: [UsersDetailsPage],
 })

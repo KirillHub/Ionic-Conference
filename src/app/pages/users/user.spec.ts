@@ -11,7 +11,7 @@ import { UsersPage } from "./users";
 import { UserService } from "../../services/user.service";
 import { Observable, of } from "rxjs";
 import { UserResult } from "../../interfaces/user-profile";
-import { ionicColors } from "../../../shared/utils/constants";
+import { ionicColors } from "../../shared/utils/constants/constants";
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from "@angular/core";
 import {} from "jasmine";
 
