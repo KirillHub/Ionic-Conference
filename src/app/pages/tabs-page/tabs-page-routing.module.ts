@@ -81,11 +81,22 @@ const routes: Routes = [
           {
             path: "user-details/:userId",
             loadChildren: () =>
-              import("../user-details/user-details.module").then(
-                (m) => m.UserDetailsModule
-              ),
+              import("../user-details/user-details.module").then((m) => m.UserDetailsModule),
           },
         ],
+      },
+      /**
+       * products
+       */
+      {
+        path: "products",
+        children: [
+          {
+            path: "",
+            loadChildren: () =>
+            import("../products/products.module").then(m => m.ProductsModule)
+          }
+        ]
       },
       {
         path: "",

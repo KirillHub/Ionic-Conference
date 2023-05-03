@@ -10,6 +10,8 @@ import { NavigationService } from "../../services/navigation.service";
 import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-route-btn.module";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { AddEditShippingDestinationModule } from "../../shared/components/add-edit-shipping-destination/add-edit-shipping-destination.module";
+import { IonicSelectableModule } from "@ionic-selectable/angular";
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     BackRouteBtnModule,
     TranslateModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IonicSelectableModule,
+    AddEditShippingDestinationModule,
   ],
   declarations: [UsersPage, RandomColorPipe],
   providers: [NavigationService, TranslateService],

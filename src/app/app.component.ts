@@ -45,6 +45,11 @@ export class AppComponent implements OnInit {
       url: "/app/tabs/users",
       icon: "accessibility",
     },
+    {
+      title: "Products",
+      url: "/app/tabs/products",
+      icon: "bag-handle",
+    },
   ];
   loggedIn = false;
   dark = false;

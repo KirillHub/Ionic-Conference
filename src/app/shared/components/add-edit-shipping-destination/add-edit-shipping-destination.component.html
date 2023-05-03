@@ -1,0 +1,329 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="tertiary">
+    <ion-title>{{ "edit_shipping_destination" | translate }}</ion-title>
+    <ion-title size="small">{{
+      "select_different_shipping_informations" | translate
+    }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="modalDismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="tertiary">
+  <form [formGroup]="shippingForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col sizeXL="6" size="6">
+          <ion-item *ngIf="!isLoadingPage">
+            <ion-label position="stacked"
+              >{{ "name" | translate
+              }}<ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              formControlName="name"
+              placeholder="{{ 'name' | translate }}"
+            ></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="text-bold" *ngIf="isLoadingPage">
+            <ion-label position="stacked" color="tertiary">
+              <ion-skeleton-text animated class="skeleton-label">
+              </ion-skeleton-text>
+            </ion-label>
+            <ion-skeleton-text
+              animated
+              class="skeleton-input-normal"
+            ></ion-skeleton-text>
+          </ion-item>
+          <div class="error-container ion-padding-top ion-padding-bottom">
+            <ng-container *ngFor="let validation of validations.name">
+              <div
+                *ngIf="
+                  shippingForm.get('name').hasError(validation.type) &&
+                  (shippingForm.get('name').dirty ||
+                    shippingForm.get('name').touched)
+                "
+              >
+                <ion-text color="danger" class="text-small"
+                  ><ion-icon color="danger" name="warning"></ion-icon
+                  >{{ validation.message }}</ion-text
+                >
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+        <ion-col sizeXL="6" size="6">
+          <ion-item *ngIf="!isLoadingPage">
+            <ion-label position="stacked"
+              >{{ "address" | translate
+              }}<ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              formControlName="address"
+              placeholder="{{ 'address' | translate }}"
+            ></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="text-bold" *ngIf="isLoadingPage">
+            <ion-label position="stacked" color="tertiary">
+              <ion-skeleton-text animated class="skeleton-label">
+              </ion-skeleton-text>
+            </ion-label>
+            <ion-skeleton-text
+              animated
+              class="skeleton-input-normal"
+            ></ion-skeleton-text>
+          </ion-item>
+          <div class="error-container ion-padding-top ion-padding-bottom">
+            <ng-container *ngFor="let validation of validations.address">
+              <div
+                *ngIf="
+                  shippingForm
+                    .get('shippingAddress')
+                    ?.get('address')
+                    .hasError(validation.type) &&
+                  (shippingForm.get('shippingAddress')?.get('address').dirty ||
+                    shippingForm.get('shippingAddress')?.get('address').touched)
+                "
+              >
+                <ion-text color="danger" class="text-small"
+                  ><ion-icon color="danger" name="warning"></ion-icon
+                  >{{ validation.message }}</ion-text
+                >
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+        <ion-col sizeXL="6" size="6">
+          <ion-item *ngIf="!isLoadingPage">
+            <ion-label position="stacked"
+              >{{ "zip" | translate
+              }}<ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              formControlName="zip"
+              type="tel"
+              inputFormat="decimal"
+              placeholder="{{ 'zip' | translate }}"
+            ></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="text-bold" *ngIf="isLoadingPage">
+            <ion-label position="stacked" color="tertiary">
+              <ion-skeleton-text animated class="skeleton-label">
+              </ion-skeleton-text>
+            </ion-label>
+            <ion-skeleton-text
+              animated
+              class="skeleton-input-normal"
+            ></ion-skeleton-text>
+          </ion-item>
+          <div class="error-container ion-padding-top ion-padding-bottom">
+            <ng-container *ngFor="let validation of validations.zip">
+              <div
+                *ngIf="
+                  shippingForm
+                    .get('shippingAddress')
+                    ?.get('zip')
+                    .hasError(validation.type) &&
+                  (shippingForm.get('shippingAddress')?.get('zip').dirty ||
+                    shippingForm.get('shippingAddress')?.get('zip').touched)
+                "
+              >
+                <ion-text color="danger" class="text-small"
+                  ><ion-icon color="danger" name="warning"></ion-icon
+                  >{{ validation.message }}</ion-text
+                >
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+        <ion-col sizeXL="6" size="6">
+          <ion-item *ngIf="!isLoadingPage">
+            <ion-label position="stacked"
+              >{{ "city" | translate
+              }}<ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              formControlName="city"
+              placeholder="{{ 'city' | translate }}"
+            ></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="text-bold" *ngIf="isLoadingPage">
+            <ion-label position="stacked" color="tertiary">
+              <ion-skeleton-text animated class="skeleton-label">
+              </ion-skeleton-text>
+            </ion-label>
+            <ion-skeleton-text
+              animated
+              class="skeleton-input-normal"
+            ></ion-skeleton-text>
+          </ion-item>
+          <div class="error-container ion-padding-top ion-padding-bottom">
+            <ng-container *ngFor="let validation of validations.city">
+              <div
+                *ngIf="
+                  shippingForm
+                    .get('shippingAddress')
+                    ?.get('city')
+                    .hasError(validation.type) &&
+                  (shippingForm.get('shippingAddress')?.get('city').dirty ||
+                    shippingForm.get('shippingAddress')?.get('city').touched)
+                "
+              >
+                <ion-text color="danger" class="text-small"
+                  ><ion-icon color="danger" name="warning"></ion-icon
+                  >{{ validation.message }}</ion-text
+                >
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+        <ion-col sizeXL="6" size="6">
+          <ion-item *ngIf="!isLoadingPage">
+            <ion-label position="stacked">{{
+              "province" | translate
+            }}</ion-label>
+            <ion-input
+              formControlName="province"
+              placeholder="{{ 'province' | translate }}"
+            ></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="text-bold" *ngIf="isLoadingPage">
+            <ion-label position="stacked" color="tertiary">
+              <ion-skeleton-text animated class="skeleton-label">
+              </ion-skeleton-text>
+            </ion-label>
+            <ion-skeleton-text
+              animated
+              class="skeleton-input-normal"
+            ></ion-skeleton-text>
+          </ion-item>
+        </ion-col>
+        <ion-col sizeXL="6" size="6">
+          <ion-item *ngIf="!isLoadingPage">
+            <ion-label position="stacked"
+              >{{ "state" | translate
+              }}<ion-text color="danger">*</ion-text></ion-label
+            >
+            <ionic-selectable
+              item-content
+              formControlName="country"
+              itemValueField="code"
+              itemTextField="name"
+              (onOpen)="loadCountries($event)"
+              [items]="countryList"
+              [canSearch]="true"
+              searchFailText="{{ 'no_country_found' | translate }}"
+              closeButtonText="{{ 'cancel' | translate }}"
+              searchPlaceholder="{{ 'search' | translate }}"
+              placeholder="{{ 'select_country' | translate }}"
+            >
+              <ng-template ionicSelectableTitleTemplate>
+                <ion-title>{{ "select_country" | translate }}</ion-title>
+              </ng-template>
+            </ionic-selectable>
+          </ion-item>
+          <ion-item lines="none" class="text-bold" *ngIf="isLoadingPage">
+            <ion-label position="stacked" color="tertiary">
+              <ion-skeleton-text animated class="skeleton-label">
+              </ion-skeleton-text>
+            </ion-label>
+            <ion-skeleton-text
+              animated
+              class="skeleton-input-normal"
+            ></ion-skeleton-text>
+          </ion-item>
+          <div class="error-container ion-padding-top ion-padding-bottom">
+            <ng-container *ngFor="let validation of validations.state">
+              <div
+                *ngIf="
+                  shippingForm
+                    .get('shippingAddress')
+                    ?.get('state')
+                    .hasError(validation.type) &&
+                  (shippingForm.get('shippingAddress')?.get('state').dirty ||
+                    shippingForm.get('shippingAddress')?.get('state').touched)
+                "
+              >
+                <ion-text color="danger" class="text-small"
+                  ><ion-icon color="danger" name="warning"></ion-icon
+                  >{{ validation.message }}</ion-text
+                >
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+        <ion-col sizeXL="6" size="6">
+          <ion-item *ngIf="!isLoadingPage">
+            <ion-label position="stacked">{{
+              "attention" | translate
+            }}</ion-label>
+            <ion-input
+              formControlName="attention"
+              placeholder="{{ 'attention' | translate }}"
+            ></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="text-bold" *ngIf="isLoadingPage">
+            <ion-label position="stacked" color="tertiary">
+              <ion-skeleton-text animated class="skeleton-label">
+              </ion-skeleton-text>
+            </ion-label>
+            <ion-skeleton-text
+              animated
+              class="skeleton-input-normal"
+            ></ion-skeleton-text>
+          </ion-item>
+        </ion-col>
+        <ion-col sizeXL="6" size="6">
+          <ion-item *ngIf="!isLoadingPage">
+            <ion-label position="stacked"
+              >{{ "telephone" | translate
+              }}<ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              formControlName="telephone"
+              type="tel"
+              inputFormat="integer"
+              placeholder="{{ 'telephone' | translate }}"
+            ></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="text-bold" *ngIf="isLoadingPage">
+            <ion-label position="stacked" color="tertiary">
+              <ion-skeleton-text animated class="skeleton-label">
+              </ion-skeleton-text>
+            </ion-label>
+            <ion-skeleton-text
+              animated
+              class="skeleton-input-normal"
+            ></ion-skeleton-text>
+          </ion-item>
+          <div class="error-container ion-padding-top ion-padding-bottom">
+            <ng-container *ngFor="let validation of validations.telephone">
+              <div
+                *ngIf="
+                  shippingForm.get('telephone').hasError(validation.type) &&
+                  (shippingForm.get('telephone').dirty ||
+                    shippingForm.get('telephone').touched)
+                "
+              >
+                <ion-text color="danger" class="text-small"
+                  ><ion-icon color="danger" name="warning"></ion-icon
+                  >{{ validation.message }}</ion-text
+                >
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="ion-padding" color="tertiary">
+    <ion-button slot="end" color="secondary" (click)="validateFormAndSave()">{{
+      "save" | translate
+    }}</ion-button>
+  </ion-toolbar>
+</ion-footer>

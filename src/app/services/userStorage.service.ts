@@ -62,7 +62,7 @@ export class UserDataStorageService {
     );
   }
 
-  getUserById(userId: number): Observable<UserResult> {
+  getUserById(userId: number): Observable<any> {
     return this.storageReady.pipe(
       filter((ready) => ready),
       switchMap((_) => {

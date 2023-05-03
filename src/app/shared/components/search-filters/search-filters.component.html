@@ -1,0 +1,144 @@
+<ion-header *ngIf="inModal">
+  <ion-toolbar color="tertiary">
+    <ion-title>{{ "filters" | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon color="secondary" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<div>
+  <form [formGroup]="myForm">
+    <ion-grid class="ion-no-padding">
+      <ion-row class="ion-no-padding ion-text-start">
+        <ion-col
+          *ngFor="let control of _filters | async"
+          [sizeXl]="control.size ? control.size : 4"
+          [sizeMd]="control.size >= 4 ? 6 : 4"
+          [sizeXs]="control.size >= 4 ? 12 : 6"
+        >
+          <ion-item *ngIf="control.type === 'input'">
+            <ion-label position="stacked" *ngIf="control.label !== ''">{{
+              control.label
+            }}</ion-label>
+            <ion-input
+              placeholder="{{ control.placeHolder | translate }}"
+              [type]="control.type"
+              [formControlName]="control.name"
+              [value]="control.value"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item *ngIf="control.type === 'select'">
+            <ion-label position="stacked" *ngIf="control.label !== ''">{{
+              control.label
+            }}</ion-label>
+            <ion-select
+              placeholder="{{ control.placeHolder | translate }}"
+              [interfaceOptions]="{ header: control.placeHolder | translate }"
+              [type]="control.type"
+              [formControlName]="control.name"
+            >
+              <ion-select-option
+                *ngFor="let option of control.selectItems; let i = index"
+                [value]="option"
+                >{{
+                  control.options?.selectOptions?.displayProperty
+                    ? option[control.options.selectOptions.displayProperty]
+                    : option
+                }}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+
+          <ion-item *ngIf="control.type === 'selectable'">
+            <ion-label position="stacked" *ngIf="control.label !== ''">{{
+              control.label
+            }}</ion-label>
+            <ionic-selectable
+              placeholder="{{ control.placeHolder | translate }}"
+              [isMultiple]="control.options?.selectOptions?.isMultiple"
+              [interfaceOptions]="{ header: control.placeHolder | translate }"
+              [type]="control.type"
+              [formControlName]="control.name"
+              [items]="control.selectItems"
+              [itemTextField]="control.options?.selectOptions?.displayProperty"
+              [itemValueField]="control.options?.selectOptions?.itemValueField"
+              [canSearch]="
+                control?.options?.selectOptions?.getSelectItems != null
+              "
+              [modalCssClass]="
+                inModal ? 'modal-select-mobile' : 'modal-select-desktop'
+              "
+              (onSearch)="getSelectData($event, control)"
+              (onInfiniteScroll)="loadMoreSelectData($event, control)"
+            >
+            </ionic-selectable>
+          </ion-item>
+
+          <ion-item *ngIf="control.type === 'textarea'">
+            <ion-label position="stacked" *ngIf="control.label !== ''">{{
+              control.label
+            }}</ion-label>
+            <ion-textarea
+              [type]="control.type"
+              [formControlName]="control.name"
+              [value]="control.value"
+            ></ion-textarea>
+          </ion-item>
+
+          <ion-item *ngIf="control.type === 'date'">
+            <ion-label position="stacked" *ngIf="control.label !== ''">{{
+              control.label
+            }}</ion-label>
+            <ion-datetime
+              [min]="
+                control.options
+                  ? control.options.startDateName &&
+                    myForm.get(control.options?.startDateName) &&
+                    myForm.get(control.options?.startDateName).value
+                    ? myForm.get(control.options?.startDateName).value
+                    : control.options.min
+                  : undefined
+              "
+              [max]="
+                control.options
+                  ? control.options.endDateName &&
+                    myForm.get(control.options?.endDateName) &&
+                    myForm.get(control.options?.endDateName).value
+                    ? myForm.get(control.options?.endDateName).value
+                    : control.options.max
+                  : undefined
+              "
+              displayFormat="DD/MM/YYYY"
+              placeholder="{{ control.placeHolder | translate }}"
+              [formControlName]="control.name"
+            ></ion-datetime>
+          </ion-item>
+
+          <ion-label position="stacked" *ngIf="control.type === 'toggle'"
+            >&nbsp;</ion-label
+          >
+          <ion-item *ngIf="control.type === 'toggle'" lines="none">
+            <ion-toggle
+              [formControlName]="control.name"
+              [checked]="control.value"
+            ></ion-toggle>
+            <ion-label *ngIf="control.label !== ''">{{
+              control.label | translate
+            }}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <ion-button
+            class="reset-button-bottom"
+            size="medium"
+            (click)="resetFilters()"
+            >{{ "reset" | translate }}</ion-button
+          >
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</div>

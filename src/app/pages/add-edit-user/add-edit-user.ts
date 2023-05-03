@@ -1,4 +1,4 @@
-import { map, filter, takeUntil } from "rxjs/operators";
+import { map, filter, takeUntil, tap } from "rxjs/operators";
 import { Observable, of, pipe, Subject } from "rxjs";
 import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import {
@@ -77,11 +77,11 @@ export class AddEditUserPage implements OnInit, OnDestroy {
 
   initializeForm() {
     this.userDataForm = this.formBuilder.group({
-      userId: null,
+      userId: this.userId,
       name: ["", Validators.required],
       gender: ["", Validators.required],
       picture: ["", Validators.required],
-      // describe: ["", Validators.minLength(10), Validators.maxLength(400)],
+      description: "", // ["", Validators.minLength(10), Validators.maxLength(400)],
     });
 
     this.validations = {
@@ -107,8 +107,26 @@ export class AddEditUserPage implements OnInit, OnDestroy {
   }
 
   async patchUserData() {
-    this.userDataById$.subscribe((userData) =>
-      this.userDataForm.patchValue(userData)
-    );
+    this.userDataById$
+      .pipe(
+        map((d: UserResult) => {
+          let { picture, ...restData } = d;
+          const dataObject = {
+            ...restData,
+            picture: picture?.large || "",
+          };
+          console.log(dataObject);
+          return dataObject;
+        })
+      )
+      .subscribe((userData) => {
+        this.userDataForm.patchValue(userData);
+      });
+  }
+
+  onSave() {
+    const formData = this.userDataForm.getRawValue();
+    console.log(formData);
+    console.log("on onSave");
   }
 }

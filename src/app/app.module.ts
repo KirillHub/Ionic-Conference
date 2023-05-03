@@ -20,6 +20,7 @@ import { NavigationService } from "./services/navigation.service";
 import { Drivers } from "@ionic/storage";
 import { ErrorService } from "./services/error.service";
 import { GlobalErrorComponent } from "./shared/components/error-data/error-data.component";
+import { IonicSelectableModule } from "@ionic-selectable/angular";
 
 @NgModule({
   imports: [

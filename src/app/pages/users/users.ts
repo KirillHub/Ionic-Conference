@@ -1,16 +1,14 @@
-import { map, filter } from "rxjs/operators";
+import { map, filter, count, combineLatestAll } from "rxjs/operators";
 import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { Observable, of, pipe } from "rxjs";
+import { combineLatest, firstValueFrom, Observable, of, pipe } from "rxjs";
 import { UserService } from "../../services/user.service";
 import { UserResult } from "../../interfaces/user-profile";
 import { ionicColors } from "../../../shared/utils/constants";
-import { NavigationService } from "../../services/navigation.service";
-import { UserData } from "../../providers/user-data";
-import { StorageService } from "../../services/storage.service";
 import { UserDataStorageService } from "../../services/userStorage.service";
 import { TranslateService } from "@ngx-translate/core";
 import { AlertService } from "../../services/alert.service";
 import { LoaderService } from "../../services/loader.service";
+import { userDescription } from "../../shared/utils/constants/userDescr";
 
 @Component({
   selector: "users-data",
@@ -20,10 +18,10 @@ import { LoaderService } from "../../services/loader.service";
 export class UsersPage implements OnInit, AfterViewInit {
   usersDataStream$: Observable<UserResult[]> = of([]);
   isUsersLoad: boolean;
-  usersData$: Observable<UserResult[]> = of([]);
+  usersDataFromApiRequest$: Observable<UserResult[]> = of([]);
   usersData: UserResult[] = [];
   colors = ionicColors;
-  navHistory: string[] = [];
+  combinedUserData: UserResult[];
 
   constructor(
     private loadUserData: UserService,
@@ -33,22 +31,41 @@ export class UsersPage implements OnInit, AfterViewInit {
     private loaderService: LoaderService
   ) {}
 
-  ngOnInit(): void {
-    this.setUsersDataToStorage();
-    this.loadUserDataFromStorage();
+  async ngOnInit() {
+    await this.setUsersDataToStorage();
+    await this.loadUserDataFromStorage();
   }
 
   ngAfterViewInit(): void {}
 
-  async setUsersDataToStorage() {
-    this.usersData$ = this.loadUserData.getUsers();
-    this.usersData$.subscribe((d) => {
-      this.userDataService.setUsersData(d);
-    });
+  async getUserDataFromApiRequest() {
+    this.usersDataFromApiRequest$ = this.loadUserData.getUsers();
   }
 
+  async setUsersDataToStorage() {
+    await this.getUserDataFromApiRequest();
+    this.usersDataFromApiRequest$
+      .pipe(
+        map((data: UserResult[]) =>
+          data.map((user) => ({
+            ...user,
+            description: userDescription,
+          }))
+        )
+      )
+      .subscribe((d) => this.userDataService.setUsersData(d));
+  }
+
+  async transformUserData() {}
+
   async loadUserDataFromStorage() {
-    this.usersDataStream$ = this.userDataService.getUsersData();
+    this.userDataService.getUsersData().subscribe((userData: UserResult[]) => {
+      userData.map(
+        (mergedUserData: UserResult) =>
+          (mergedUserData.isOpenMoreUserInfo = false)
+      );
+      this.combinedUserData = userData;
+    });
   }
 
   async openConfirmDeleteCompanyAlert() {
@@ -84,5 +101,11 @@ export class UsersPage implements OnInit, AfterViewInit {
 
   async onRefreshClick() {
     this.usersDataStream$ = this.loadUserData.getUsers();
+  }
+
+  onToggleMoreInfo(event: Event, userId: number) {
+    this.preventDefaultSettings(event);
+    this.combinedUserData[userId].isOpenMoreUserInfo =
+      !this.combinedUserData[userId].isOpenMoreUserInfo;
   }
 }

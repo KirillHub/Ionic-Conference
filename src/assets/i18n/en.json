@@ -8,6 +8,9 @@
   "user_name": "User name",
   "user_gender": "User gender",
   "insert_user_gender": "Insert user gender",
+  "insert_user_picture_link": "Insert user picture link",
+  "insert_user_description": "Insert user description",
+
 
   "user_name_missed_error": "User name missed error",
   "user_gender_missed_error": "User gender missed error",

@@ -1,0 +1,30 @@
+<ion-grid>
+  <ion-row class="ion-no-padding">
+    <ion-col
+      *ngIf="_filters && _filters.searchControl"
+      [size]="
+        mobileMode && _filters && _filters.filterControls?.length > 0 ? 9 : 12
+      "
+      class="ion-no-padding"
+    >
+      <ion-searchbar
+        [(ngModel)]="_filters.searchControl.value"
+        (ngModelChange)="changeSearch()"
+      ></ion-searchbar>
+    </ion-col>
+    <ion-col
+      *ngIf="_filters && _filters.filterControls?.length > 0"
+      [size]="mobileMode ? 3 : 12"
+      class="ion-no-padding"
+    >
+      <ion-button expand="block" (click)="openFilterModal()" *ngIf="mobileMode">
+        {{ "filters" | translate }}
+      </ion-button>
+      <app-search-filters
+        *ngIf="!mobileMode"
+        [(filters)]="_filters.filterControls"
+        (filtersChange)="changeFilter($event)"
+      ></app-search-filters>
+    </ion-col>
+  </ion-row>
+</ion-grid>

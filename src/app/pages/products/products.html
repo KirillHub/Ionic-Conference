@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title> Product List </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let product of products$ | async">
+      <ion-thumbnail slot="start">
+        <img [src]="product.image" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ product.title }}</h2>
+        <p>{{ product.description }}</p>
+        <p>{{ product.price }}</p>
+      </ion-label>
+      <ion-buttons>
+        <ion-button>
+          <ion-icon name="brush-outline"></ion-icon>
+        </ion-button>
+        <ion-button> <ion-icon name="close-outline"></ion-icon></ion-button>
+        <ion-button><ion-icon name="cart-outline"></ion-icon> </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <section *ngIf=" shippingDestinationList.controls.length > 0 ">
+    <ion-item
+      *ngFor="let dest of shippingDestinationList.controls; let i=index"
+      lines="full"
+    >
+      <ion-label class="ion-text-wrap">
+        <h2>{{dest?.value?.name}}</h2>
+        <h3>{{dest?.value?.address}}</h3>
+        <h3>
+          {{dest?.value?.zip}}, {{dest?.value?.city}},
+          {{dest?.value?.province}}, {{dest?.value?.country?.name}},
+        </h3>
+        <p>{{dest?.value?.attention}}, {{dest?.value?.telephone}}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="openShippingDestinationModal(dest)">
+          <ion-icon class="position-relative" name="pencil"></ion-icon>
+        </ion-button>
+        <ion-button (click)="openConfirmDeletShippingDestinationAlert(dest,i)">
+          <ion-icon
+            class="position-relative"
+            name="trash"
+            color="danger"
+          ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </section>
+</ion-content>

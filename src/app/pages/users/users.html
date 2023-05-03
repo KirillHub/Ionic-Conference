@@ -1,7 +1,6 @@
 <ion-content class="ion-padding">
   <ion-header>
     <ion-header class="ion-no-border pad1"> Users data </ion-header>
-    <ion-header>{{ "test_name_here" | translate}}</ion-header>
 
     <ion-toolbar>
       <ion-buttons slot="secondary">
@@ -33,16 +32,18 @@
     </ion-content>
   </ion-loading>
 
-  <ion-grid [hidden]="!(usersDataStream$ | async)?.length">
+  <ion-grid >
+    <!-- [hidden]="!(usersDataStream$ | async)?.length" -->
     <ion-row>
       <ion-col
         size="12"
         size-md="6"
-        *ngFor="let user of usersDataStream$ | async"
+        *ngFor="let user of combinedUserData"
       >
         <ion-item
           routerLink="/app/tabs/users/user-details/{{user.id}}"
           (click)="selectedUserId(user.id)"
+          [disabled]="isRouteOn ? true : null"
         >
           <ion-card [color]="colors | randomColor">
             <ion-card-header>
@@ -83,15 +84,35 @@
 
             <ion-card-content>
               <ion-img
+                class="ion-padding-bottom"
                 [src]="user.picture.large"
                 style="width: 100px; margin-right: 20px"
               ></ion-img>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="6"> <ion-text>email: </ion-text></ion-col>
+                  <ion-col size="6">
+                    <ion-text>{{user.email}}</ion-text></ion-col
+                  >
+                  <ion-col size="6"> <ion-text>adress: </ion-text></ion-col>
+                  <ion-col size="6">
+                    <ion-text>{{user.email}}</ion-text></ion-col
+                  >
+                </ion-row>
+              </ion-grid>
 
-              Card Content Lorem ipsum dolor sit, amet consectetur adipisicing
-              elit. Sunt facilis at ipsum reiciendis, non totam aliquid
-              voluptate tempora dolorum voluptas, consequatur minus eos,
-              deleniti ea corporis qui vitae animi quis!
+              <ion-text> {{user.description}} </ion-text>
             </ion-card-content>
+
+            <ion-item-group class="disable-hover">
+              <ion-item (click)="onToggleMoreInfo($event, user.id)"
+                >more info?
+                <ion-icon name="caret-down-outline"></ion-icon>
+              </ion-item>
+              <ion-list *ngIf="user.isOpenMoreUserInfo">
+                <ion-item>{{user.description}}</ion-item>
+              </ion-list>
+            </ion-item-group>
           </ion-card>
         </ion-item>
       </ion-col>

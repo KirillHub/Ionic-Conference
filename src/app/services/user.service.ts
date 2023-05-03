@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map, Observable, catchError, throwError } from "rxjs";
 import { UserData, UserResult } from "../interfaces/user-profile";
+import { apiLinks } from "../shared/utils/constants/apiLinks";
 import { ErrorService } from "./error.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserService {
-  apiUrl = "https://randomuser.me/api/";
+  apiUrl = apiLinks.userApi;
   seed = 123;
 
   headers = new HttpHeaders({

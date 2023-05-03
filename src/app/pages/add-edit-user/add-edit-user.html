@@ -8,7 +8,8 @@
         >
       </ion-col>
       <ion-col size="12" size-md="6" class="ion-text-end">
-        <back-route-btn></back-route-btn>
+          <ion-button type="submit" (click)="onSave()">{{'save' | uppercase}}</ion-button>
+          <back-route-btn></back-route-btn>
       </ion-col>
     </ion-row>
   </ion-header>
@@ -24,107 +25,175 @@
                 | translate)}}
               </ion-header>
 
-              <ion-card-content class="ionic-no-padding">
-                <ion-grid>
-                  <ion-row>
-                    <ion-col sizeXl="6" size="12">
-                      <ion-item *ngIf="!isLoadingPage">
-                        <ion-label position="stacked" class="ion-padding-bottom"
-                          >{{'user_name' | translate}}
-                          <ion-text color="danger">*</ion-text></ion-label
-                        >
-                        <ion-input
-                          [label]="isUserId ? '' : 'name'"
-                          label-placement="floating"
-                          fill="solid"
-                          formControlName="name"
-                          placeholder="{{'insert_user_name' | translate}}"
-                        ></ion-input>
-                        <ion-item
-                          lines="none"
-                          class="text-bold"
-                          *ngIf="isLoadingPage"
-                        >
-                          <ion-label position="stacked" color="tertiary">
-                            <ion-skeleton-text animated class="skeleton-label">
-                            </ion-skeleton-text>
-                          </ion-label>
-                          <ion-skeleton-text
-                            animated
-                            class="skeleton-input-normal"
-                          ></ion-skeleton-text>
-                        </ion-item>
-                        <div
-                          class="error-container ion-padding-top ion-padding-bottom"
-                        >
-                          <ng-container
-                            *ngFor="let validation of validations.surname"
-                          >
-                            <div
-                              *ngIf="userDataForm.get('surname').hasError(validation.type) && (userDataForm.get('surname').dirty || userDataForm.get('surname').touched)"
-                            >
-                              <ion-text color="danger" class="text-small"
-                                ><ion-icon
-                                  color="danger"
-                                  name="warning"
-                                ></ion-icon
-                                >{{ validation.message }}</ion-text
-                              >
-                            </div>
-                          </ng-container>
-                        </div>
+              <ion-grid>
+                <ion-row style="width: 100%">
+                  <ion-col sizeXl="6" size="12">
+                    <ion-item *ngIf="!isLoadingPage">
+                      <ion-label position="stacked" class="ion-padding-bottom"
+                        >{{'user_name' | translate}}
+                        <ion-text color="danger">*</ion-text></ion-label
+                      >
+                      <ion-input
+                        [label]="isUserId ? '' : 'name'"
+                        label-placement="floating"
+                        fill="solid"
+                        formControlName="name"
+                        placeholder="{{'insert_user_name' | translate}}"
+                      ></ion-input>
+                      <ion-item
+                        lines="none"
+                        class="text-bold"
+                        *ngIf="isLoadingPage"
+                      >
+                        <ion-label position="stacked" color="tertiary">
+                          <ion-skeleton-text animated class="skeleton-label">
+                          </ion-skeleton-text>
+                        </ion-label>
+                        <ion-skeleton-text
+                          animated
+                          class="skeleton-input-normal"
+                        ></ion-skeleton-text>
                       </ion-item>
+                      <div
+                        class="error-container ion-padding-top ion-padding-bottom"
+                      >
+                        <ng-container
+                          *ngFor="let validation of validations.name"
+                        >
+                          <div
+                            *ngIf="userDataForm.get('name').hasError(validation.type) && (userDataForm.get('name').dirty || userDataForm.get('name').touched)"
+                          >
+                            <ion-text color="danger" class="text-small"
+                              ><ion-icon
+                                color="danger"
+                                name="warning"
+                              ></ion-icon
+                              >{{ validation.message }}</ion-text
+                            >
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ion-item>
+                  </ion-col>
 
-                      <ion-item *ngIf="!isLoadingPage">
-                        <ion-label position="stacked" class="ion-padding-bottom"
-                          >{{'user_gender' | translate}}
-                          <ion-text color="danger">*</ion-text></ion-label
-                        >
-                        <ion-input
-                          [label]="isUserId ? '' : 'gender'"
-                          label-placement="floating"
-                          fill="solid"
-                          formControlName="gender"
-                          placeholder="{{'insert_user_gender' | translate}}"
-                        ></ion-input>
-                        <ion-item
-                          lines="none"
-                          class="text-bold"
-                          *ngIf="isLoadingPage"
-                        >
-                          <ion-label position="stacked" color="tertiary">
-                            <ion-skeleton-text animated class="skeleton-label">
-                            </ion-skeleton-text>
-                          </ion-label>
-                          <ion-skeleton-text
-                            animated
-                            class="skeleton-input-normal"
-                          ></ion-skeleton-text>
-                        </ion-item>
-                        <div
-                          class="error-container ion-padding-top ion-padding-bottom"
-                        >
-                          <ng-container
-                            *ngFor="let validation of validations.gender"
-                          >
-                            <div
-                              *ngIf="userDataForm.get('gender').hasError(validation.type) && (userDataForm.get('gender').dirty || userDataForm.get('gender').touched)"
-                            >
-                              <ion-text color="danger" class="text-small"
-                                ><ion-icon
-                                  color="danger"
-                                  name="warning"
-                                ></ion-icon
-                                >{{ validation.message }}</ion-text
-                              >
-                            </div>
-                          </ng-container>
-                        </div>
+                  <ion-col sizeXl="6" size="12">
+                    <ion-item *ngIf="!isLoadingPage">
+                      <ion-label position="stacked" class="ion-padding-bottom"
+                        >{{'user_gender' | translate}}
+                        <ion-text color="danger">*</ion-text></ion-label
+                      >
+                      <ion-input
+                        [label]="isUserId ? '' : 'gender'"
+                        label-placement="floating"
+                        fill="solid"
+                        formControlName="gender"
+                        placeholder="{{'insert_user_gender' | translate}}"
+                      ></ion-input>
+                      <ion-item
+                        lines="none"
+                        class="text-bold"
+                        *ngIf="isLoadingPage"
+                      >
+                        <ion-label position="stacked" color="tertiary">
+                          <ion-skeleton-text animated class="skeleton-label">
+                          </ion-skeleton-text>
+                        </ion-label>
+                        <ion-skeleton-text
+                          animated
+                          class="skeleton-input-normal"
+                        ></ion-skeleton-text>
                       </ion-item>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-card-content>
+                      <div
+                        class="error-container ion-padding-top ion-padding-bottom"
+                      >
+                        <ng-container
+                          *ngFor="let validation of validations.gender"
+                        >
+                          <div
+                            *ngIf="userDataForm.get('gender').hasError(validation.type) && (userDataForm.get('gender').dirty || userDataForm.get('gender').touched)"
+                          >
+                            <ion-text color="danger" class="text-small"
+                              ><ion-icon
+                                color="danger"
+                                name="warning"
+                              ></ion-icon
+                              >{{ validation.message }}</ion-text
+                            >
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ion-item>
+                  </ion-col>
+
+                  <ion-col sizeXl="6" size="12">
+                    <ion-item *ngIf="!isLoadingPage">
+                      <ion-label position="stacked" class="ion-padding-bottom"
+                        >picture
+                        <ion-text color="danger">*</ion-text></ion-label
+                      >
+                      <ion-input
+                        [label]="isUserId ? '' : 'picture'"
+                        label-placement="floating"
+                        fill="solid"
+                        formControlName="picture"
+                        placeholder="{{'insert_user_picture_link' | translate}}"
+                      ></ion-input>
+                      <div
+                        class="error-container ion-padding-top ion-padding-bottom"
+                      >
+                        <ng-container
+                          *ngFor="let validation of validations.picture"
+                        >
+                          <div
+                            *ngIf="userDataForm.get('picture').hasError(validation.type) && (userDataForm.get('picture').dirty || userDataForm.get('picture').touched)"
+                          >
+                            <ion-text color="danger" class="text-small"
+                              ><ion-icon
+                                color="danger"
+                                name="warning"
+                              ></ion-icon
+                              >{{ validation.message }}</ion-text
+                            >
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ion-item>
+                  </ion-col>
+
+                  <ion-col sizeXl="6" size="12">
+                    <ion-item *ngIf="!isLoadingPage">
+                      <ion-label position="stacked" class="ion-padding-bottom"
+                        >decription
+                        <ion-text color="danger">*</ion-text></ion-label
+                      >
+                      <ion-input
+                        [label]="isUserId ? '' : 'description'"
+                        label-placement="floating"
+                        fill="solid"
+                        formControlName="description"
+                        placeholder="{{'insert_user_description' | translate}}"
+                      ></ion-input>
+                      <div
+                        class="error-container ion-padding-top ion-padding-bottom"
+                      >
+                        <ng-container>
+                          <div
+                            *ngIf="userDataForm.get('description').hasError('minlenght') && userDataForm.get('description').hasError('maxlenght') && (userDataForm.get('description').dirty || userDataForm.get('description').touched)"
+                          >
+                            <ion-text color="danger" class="text-small"
+                              ><ion-icon
+                                color="danger"
+                                name="warning"
+                              ></ion-icon>
+                              Length !!!!
+                            </ion-text>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
             </ion-card>
           </ion-col>
         </ion-row>

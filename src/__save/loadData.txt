@@ -1,0 +1,46 @@
+  async loadData() {
+    const fixedTypologies = ["company_category", "payment", "currency"];
+    const promises = fixedTypologies.map((type) =>
+      this.fixedTypologiesService.getFixedTypologies(type)
+    );
+    promises.push(this.sectorService.getSectors());
+
+    if (this.companyId) {
+      promises.push(this.companyService.getCompanyDetailInfo(this.companyId));
+    }
+
+    this.isLoadingPage = true;
+    if (this.idSegment === "products") {
+      this.isLoadingProducts = true;
+    }
+
+    try {
+      const [categoryData, paymentData, currencyData, sectorData, companyData] =
+        await Promise.all(promises);
+      this.categoryList = categoryData.type_list;
+      this.paymentList = paymentData.type_list;
+      this.currencyList = currencyData.type_list;
+      this.sectorList = sectorData.sectorList;
+
+      if (companyData) {
+        this.companyInfo = companyData;
+        this.patchInfoFormValue();
+        this.patchCustomProductFormValue();
+      } else {
+        this.pushCompanySectorList();
+      }
+
+      this.isLoadingPage = false;
+      this.backupFormData();
+
+      if (this.idSegment === "products") {
+        this.skeletonsProducts = Array(this.itemsPerPage)
+          .fill(0)
+          .map((_, i) => i);
+        this.getProducts();
+      }
+    }  catch (error) {
+      this.isLoadingPage = false;
+      await this.alertService.apiError(error.errorCode).present();
+    }
+  }
