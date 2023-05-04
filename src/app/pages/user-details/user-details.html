@@ -1,36 +1,53 @@
 <ion-content fullscreen="true">
   <back-route-btn></back-route-btn>
 
-  <div *ngIf="userData">
-    <ion-row>
+  <ion-grid>
+    <ion-row *ngIf="userData as user">
       <ion-col size="12" size-md="6">
         <ion-item>
-          <ion-card>
+          <ion-card [color]="colors | randomColor">
             <ion-card-header>
               <ion-grid>
                 <ion-row justify-content-between>
                   <ion-col>
-                    <ion-card-title>{{ userData.name }}</ion-card-title>
-                    <ion-card-subtitle>{{ userData.gender }}</ion-card-subtitle>
+                    <ion-card-title>{{ user.name }}</ion-card-title>
+                    <ion-card-subtitle>{{ user.gender }}</ion-card-subtitle>
                   </ion-col>
+                  <ion-col-auto> </ion-col-auto>
                 </ion-row>
               </ion-grid>
             </ion-card-header>
 
             <ion-card-content>
               <ion-img
-                [src]="userData.picture.large"
-                style="width: 100px; margin-right: 20px"
+                [src]="user.picture.large"
+                style="width: 170px; object-fit: cover"
               ></ion-img>
-
-              Card Content Lorem ipsum dolor sit, amet consectetur adipisicing
-              elit. Sunt facilis at ipsum reiciendis, non totam aliquid
-              voluptate tempora dolorum voluptas, consequatur minus eos,
-              deleniti ea corporis qui vitae animi quis!
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="6"> <ion-text>email: </ion-text></ion-col>
+                  <ion-col size="6">
+                    <ion-text>{{user.email}}</ion-text></ion-col
+                  >
+                </ion-row>
+              </ion-grid>
             </ion-card-content>
+
+            <ion-item-group class="disable-hover">
+              <ion-list>
+                <ion-item-group>
+                  <ion-item>Country: {{user.location.country}}</ion-item>
+                  <ion-item>City: {{user.location.city}}</ion-item>
+                  <ion-item
+                    >About user: <br />
+                    {{user.description}}</ion-item
+                  >
+                </ion-item-group>
+              </ion-list>
+            </ion-item-group>
           </ion-card>
         </ion-item>
       </ion-col>
     </ion-row>
-  </div>
+  </ion-grid>
 </ion-content>

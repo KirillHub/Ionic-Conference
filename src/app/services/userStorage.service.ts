@@ -7,6 +7,7 @@ import {
   switchMap,
   tap,
   toArray,
+  take,
 } from "rxjs/operators";
 import {
   Observable,
@@ -39,8 +40,20 @@ export class UserDataStorageService {
     this.storageReady.next(true);
   }
 
-  async setUsersData(userData: UserResult[]) {
-    await this.storage.set(this.STORAGE_USER_KEY, userData);
+  // async setUsersData(userData: UserResult[]) {
+  //   await this.storage.set(this.STORAGE_USER_KEY, userData);
+  // }
+
+  setUsersData(userData: UserResult[])  {
+    return this.storageReady.pipe(
+      filter((ready) => ready),
+      switchMap(() => from(this.storage.set(this.STORAGE_USER_KEY, userData))),
+      take(1),
+      catchError((error) => {
+        this.errorService.handle(error);
+        return throwError(() => error);
+      })
+    );
   }
 
   async addUser(userData: UserResult) {
@@ -49,7 +62,7 @@ export class UserDataStorageService {
     return this.storage.set(this.STORAGE_USER_KEY, usersData);
   }
 
-  getUsersData() {
+  getUsersData(): Observable<UserResult[]> {
     return this.storageReady.pipe(
       filter((ready) => ready),
       exhaustMap((_) => {
@@ -62,7 +75,7 @@ export class UserDataStorageService {
     );
   }
 
-  getUserById(userId: number): Observable<any> {
+  getUserById(userId: number): Observable<UserResult> {
     return this.storageReady.pipe(
       filter((ready) => ready),
       switchMap((_) => {
@@ -89,7 +102,12 @@ export class UserDataStorageService {
       filter((ready) => ready),
       switchMap(() => this.storage.get(this.STORAGE_USER_KEY)),
       map((users: UserResult[]) => {
-        const newUsersArr = users.filter((user) => user.id !== userId);
+        const newUsersArr = users
+          .filter((user) => user.id !== userId)
+          .map((user, index) => ({
+            ...user,
+            id: index,
+          }));
         return newUsersArr;
       }),
       switchMap((updatedUsers) =>

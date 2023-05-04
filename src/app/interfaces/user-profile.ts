@@ -1,10 +1,10 @@
 interface Location {
-  street?: {
-    number: number;
-    name: string;
-  };
-  city?: string;
-  state: string;
+  // street?: {
+  //   number: number;
+  //   name: string;
+  // };
+  city: string;
+  // state: string;
   country: string;
 }
 

@@ -1,6 +1,28 @@
-import { map, filter, count, combineLatestAll } from "rxjs/operators";
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { combineLatest, firstValueFrom, Observable, of, pipe } from "rxjs";
+import {
+  map,
+  switchMap,
+  filter,
+  tap,
+  count,
+  combineLatestAll,
+} from "rxjs/operators";
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+} from "@angular/core";
+import {
+  combineLatest,
+  firstValueFrom,
+  Observable,
+  of,
+  pipe,
+  concat,
+  Subscription,
+  Subject,
+} from "rxjs";
 import { UserService } from "../../services/user.service";
 import { UserResult } from "../../interfaces/user-profile";
 import { ionicColors } from "../../shared/utils/constants/constants";
@@ -15,7 +37,9 @@ import { userDescription } from "../../shared/utils/constants/userDescr";
   templateUrl: "users.html",
   styleUrls: ["./users.scss"],
 })
-export class UsersPage implements OnInit, AfterViewInit {
+export class UsersPage implements OnInit, OnDestroy {
+  private destroyed = new Subject<any>();
+
   usersDataStream$: Observable<UserResult[]> = of([]);
   isUsersLoad: boolean;
   usersDataFromApiRequest$: Observable<UserResult[]> = of([]);
@@ -31,41 +55,46 @@ export class UsersPage implements OnInit, AfterViewInit {
     private loaderService: LoaderService
   ) {}
 
-  async ngOnInit() {
-    await this.setUsersDataToStorage();
-    await this.loadUserDataFromStorage();
+  @HostListener("window:beforeunload", ["$event"])
+  ngOnDestroy(): void {
+    this.destroyed.next(null);
+    this.destroyed.complete();
   }
 
-  ngAfterViewInit(): void {}
-
-  async getUserDataFromApiRequest() {
-    this.usersDataFromApiRequest$ = this.loadUserData.getUsers();
+  ngOnInit() {
+    this.setAndLoadUserData().subscribe();
   }
 
-  async setUsersDataToStorage() {
-    await this.getUserDataFromApiRequest();
-    this.usersDataFromApiRequest$
-      .pipe(
-        map((data: UserResult[]) =>
-          data.map((user) => ({
-            ...user,
-            description: userDescription,
-          }))
+  getUserDataFromApiRequest() {
+    return this.loadUserData.getUsers();
+  }
+
+  setUsersDataToStorage() {
+    return this.getUserDataFromApiRequest().pipe(
+      map((data: UserResult[]) =>
+        data.map((user) => ({
+          ...user,
+          description: userDescription,
+        }))
+      ),
+      switchMap((data: UserResult[]) => this.userDataService.setUsersData(data))
+    );
+  }
+
+  loadUserDataFromStorage() {
+    return this.userDataService.getUsersData().pipe(
+      tap((userData: UserResult[]) =>
+        userData.forEach(
+          (mergedUserData: UserResult) =>
+            (mergedUserData.isOpenMoreUserInfo = false)
         )
-      )
-      .subscribe((d) => this.userDataService.setUsersData(d));
+      ),
+      map((userData: UserResult[]) => (this.combinedUserData = userData))
+    );
   }
 
-  async transformUserData() {}
-
-  async loadUserDataFromStorage() {
-    this.userDataService.getUsersData().subscribe((userData: UserResult[]) => {
-      userData.map(
-        (mergedUserData: UserResult) =>
-          (mergedUserData.isOpenMoreUserInfo = false)
-      );
-      this.combinedUserData = userData;
-    });
+  setAndLoadUserData(): Observable<UserResult[]> {
+    return concat(this.setUsersDataToStorage(), this.loadUserDataFromStorage());
   }
 
   async openConfirmDeleteCompanyAlert() {
@@ -78,7 +107,15 @@ export class UsersPage implements OnInit, AfterViewInit {
   async onDeleteClick(event: Event, userId: number) {
     this.preventDefaultSettings(event);
     const isConfirmTrue = await this.openConfirmDeleteCompanyAlert();
-    isConfirmTrue ? await this.removeUserFromStorage(userId) : undefined;
+    if (isConfirmTrue) {
+      await this.removeUserFromStorage(userId);
+
+      this.combinedUserData.splice(userId, 1);
+      this.combinedUserData = this.combinedUserData.map((user, i) => ({
+        ...user,
+        id: i,
+      }));
+    }
   }
 
   async onEditUserClick(event: Event, userId: number) {
@@ -96,11 +133,11 @@ export class UsersPage implements OnInit, AfterViewInit {
   }
 
   async removeUserFromStorage(userId: number) {
-    this.usersDataStream$ = this.userDataService.removeUserById(userId);
+    this.userDataService.removeUserById(userId).subscribe();
   }
 
-  async onRefreshClick() {
-    this.usersDataStream$ = this.loadUserData.getUsers();
+  onRefreshClick() {
+    return this.setAndLoadUserData().subscribe();
   }
 
   onToggleMoreInfo(event: Event, userId: number) {

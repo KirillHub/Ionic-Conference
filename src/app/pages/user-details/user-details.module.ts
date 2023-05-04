@@ -16,6 +16,7 @@ import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-
     UserDetailsPageRoutingModule,
     BackRouteBtnModule,
   ],
-  declarations: [UsersDetailsPage],
+  declarations: [UsersDetailsPage, RandomColorPipe],
+  providers: [],
 })
 export class UserDetailsModule {}

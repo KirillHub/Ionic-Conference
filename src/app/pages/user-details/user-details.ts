@@ -13,26 +13,22 @@ import { UserDataStorageService } from "../../services/userStorage.service";
 })
 export class UsersDetailsPage implements OnInit {
   isUsersLoad: boolean;
-  userData: any;
+  userData: UserResult;
   data: Observable<UserResult[]> = of([]);
-  picture: string;
   colors = ionicColors;
   userId: number;
 
   constructor(private userDataService: UserDataStorageService) {}
 
-  ngOnInit(): void {
-    // this.getUserById();
-  }
+  ngOnInit(): void {}
 
   async ionViewWillEnter() {
-    console.log("We in user-details");
     this.userDataService.userSelectedId.subscribe((userId) => {
       this.userId = userId;
     });
 
-    this.userDataService.getUserById(this.userId).subscribe((data) => {
-      this.userData = data;
-    });
+    this.userDataService
+      .getUserById(this.userId)
+      .subscribe((data) => (this.userData = data));
   }
 }

@@ -30,6 +30,7 @@ export class UserService {
         map((data) => {
           const userData = data.results.map((user, id) => {
             const name = Object.values(user.name).join(" ");
+
             return { ...user, name, id };
           });
           return userData;
