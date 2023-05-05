@@ -13,6 +13,8 @@ interface Picture {
 }
 
 export interface UserResult {
+  city? : string,
+  country? : string,
   id: number;
   gender: string;
   name: string;
@@ -24,8 +26,12 @@ export interface UserResult {
   isOpenMoreUserInfo?: boolean;
 }
 
+export interface CustomUserResult extends UserResult {
+  imageLink: string;
+  city: string;
+  country: string;
+}
 
 export interface UserData {
   results: UserResult[];
 }
-

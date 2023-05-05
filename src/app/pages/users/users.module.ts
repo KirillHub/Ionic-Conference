@@ -12,6 +12,7 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AddEditShippingDestinationModule } from "../../shared/components/add-edit-shipping-destination/add-edit-shipping-destination.module";
 import { IonicSelectableModule } from "@ionic-selectable/angular";
+import { PipeModule } from "../../shared/pipes/pipe.module";
 
 @NgModule({
   imports: [
@@ -25,8 +26,9 @@ import { IonicSelectableModule } from "@ionic-selectable/angular";
     ReactiveFormsModule,
     IonicSelectableModule,
     AddEditShippingDestinationModule,
+    PipeModule
   ],
-  declarations: [UsersPage, RandomColorPipe],
+  declarations: [UsersPage],
   providers: [NavigationService, TranslateService],
 })
 export class UsersModule {}

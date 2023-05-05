@@ -40,11 +40,7 @@ export class UserDataStorageService {
     this.storageReady.next(true);
   }
 
-  // async setUsersData(userData: UserResult[]) {
-  //   await this.storage.set(this.STORAGE_USER_KEY, userData);
-  // }
-
-  setUsersData(userData: UserResult[])  {
+  setUsersData(userData: UserResult[]) {
     return this.storageReady.pipe(
       filter((ready) => ready),
       switchMap(() => from(this.storage.set(this.STORAGE_USER_KEY, userData))),
@@ -56,10 +52,29 @@ export class UserDataStorageService {
     );
   }
 
+  /*
   async addUser(userData: UserResult) {
     const usersData = (await this.storage.get(this.STORAGE_USER_KEY)) || [];
     usersData.push(userData);
     return this.storage.set(this.STORAGE_USER_KEY, usersData);
+  }
+ */
+
+  addUser(userData: UserResult) {
+    return this.storageReady.pipe(
+      filter((ready) => ready),
+      exhaustMap((_) =>
+        from(this.storage.get(this.STORAGE_USER_KEY) || of([]))
+      ),
+      tap((loadedUsersData: UserResult[]) => loadedUsersData.push(userData)),
+      switchMap((updatedUsers) =>
+        from(this.storage.set(this.STORAGE_USER_KEY, updatedUsers))
+      ),
+      catchError((error) => {
+        this.errorService.handle(error);
+        return throwError(() => error);
+      })
+    );
   }
 
   getUsersData(): Observable<UserResult[]> {

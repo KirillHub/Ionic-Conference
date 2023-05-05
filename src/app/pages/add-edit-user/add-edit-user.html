@@ -8,8 +8,10 @@
         >
       </ion-col>
       <ion-col size="12" size-md="6" class="ion-text-end">
-          <ion-button type="submit" (click)="onSave()">{{'save' | uppercase}}</ion-button>
-          <back-route-btn></back-route-btn>
+        <ion-button type="submit" (click)="onSave()" 
+          >{{'save' | uppercase}}</ion-button
+        >
+        <back-route-btn></back-route-btn>
       </ion-col>
     </ion-row>
   </ion-header>
@@ -146,6 +148,151 @@
                         >
                           <div
                             *ngIf="userDataForm.get('picture').hasError(validation.type) && (userDataForm.get('picture').dirty || userDataForm.get('picture').touched)"
+                          >
+                            <ion-text color="danger" class="text-small"
+                              ><ion-icon
+                                color="danger"
+                                name="warning"
+                              ></ion-icon
+                              >{{ validation.message }}</ion-text
+                            >
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ion-item>
+                  </ion-col>
+
+                  <ion-col sizeXl="6" size="12">
+                    <ion-item *ngIf="!isLoadingPage">
+                      <ion-label position="stacked" class="ion-padding-bottom"
+                        >email <ion-text color="danger">*</ion-text></ion-label
+                      >
+                      <ion-input
+                        [label]="isUserId ? '' : 'email'"
+                        label-placement="floating"
+                        fill="solid"
+                        formControlName="email"
+                        placeholder="{{'user_email_missed_error' | translate}}"
+                      ></ion-input>
+
+                      <div
+                        class="error-container ion-padding-top ion-padding-bottom"
+                      >
+                        <ng-container
+                          *ngFor="let validation of validations.email"
+                        >
+                          <div
+                            *ngIf="userDataForm.get('email').hasError(validation.type) && (userDataForm.get('email').dirty || userDataForm.get('email').touched)"
+                          >
+                            <ion-text color="danger" class="text-small"
+                              ><ion-icon
+                                color="danger"
+                                name="warning"
+                              ></ion-icon
+                              >{{ validation.message }}</ion-text
+                            >
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ion-item>
+                  </ion-col>
+
+                  <ion-col sizeXl="6" size="12">
+                    <ion-item *ngIf="!isLoadingPage">
+                      <ion-label position="stacked" class="ion-padding-bottom"
+                        >phone <ion-text color="danger">*</ion-text></ion-label
+                      >
+                      <ion-input
+                        [label]="isUserId ? '' : 'phone'"
+                        label-placement="floating"
+                        fill="solid"
+                        formControlName="phone"
+                        placeholder="{{'user_phone_missed_error' | translate}}"
+                        inputFormat="numeric"
+                        type="tel"
+                        minlength="8"
+                        maxlength="15"
+                      ></ion-input>
+
+                      <div
+                        class="error-container ion-padding-top ion-padding-bottom"
+                      >
+                        <ng-container
+                          *ngFor="let validation of validations.phone"
+                        >
+                          <div
+                            *ngIf="userDataForm.get('phone').hasError(validation.type) && (userDataForm.get('phone').dirty || userDataForm.get('phone').touched)"
+                          >
+                            <ion-text color="danger" class="text-small"
+                              ><ion-icon
+                                color="danger"
+                                name="warning"
+                              ></ion-icon
+                              >{{ validation.message }}</ion-text
+                            >
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ion-item>
+                  </ion-col>
+
+                  <ion-col sizeXl="6" size="12">
+                    <ion-item *ngIf="!isLoadingPage">
+                      <ion-label position="stacked" class="ion-padding-bottom"
+                        >city <ion-text color="danger">*</ion-text></ion-label
+                      >
+                      <ion-input
+                        [label]="isUserId ? '' : 'city'"
+                        label-placement="floating"
+                        fill="solid"
+                        formControlName="city"
+                        placeholder="{{'user_city_missed_error' | translate}}"
+                      ></ion-input>
+
+                      <div
+                        class="error-container ion-padding-top ion-padding-bottom"
+                      >
+                        <ng-container
+                          *ngFor="let validation of validations.city"
+                        >
+                          <div
+                            *ngIf="userDataForm.get('city').hasError(validation.type) && (userDataForm.get('city').dirty || userDataForm.get('city').touched)"
+                          >
+                            <ion-text color="danger" class="text-small"
+                              ><ion-icon
+                                color="danger"
+                                name="warning"
+                              ></ion-icon
+                              >{{ validation.message }}</ion-text
+                            >
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ion-item>
+                  </ion-col>
+
+                  <ion-col sizeXl="6" size="12">
+                    <ion-item *ngIf="!isLoadingPage">
+                      <ion-label position="stacked" class="ion-padding-bottom"
+                        >country
+                        <ion-text color="danger">*</ion-text></ion-label
+                      >
+                      <ion-input
+                        [label]="isUserId ? '' : 'country'"
+                        label-placement="floating"
+                        fill="solid"
+                        formControlName="country"
+                        placeholder="{{'user_country_missed_error' | translate}}"
+                      ></ion-input>
+
+                      <div
+                        class="error-container ion-padding-top ion-padding-bottom"
+                      >
+                        <ng-container
+                          *ngFor="let validation of validations.country"
+                        >
+                          <div
+                            *ngIf="userDataForm.get('country').hasError(validation.type) && (userDataForm.get('country').dirty || userDataForm.get('country').touched)"
                           >
                             <ion-text color="danger" class="text-small"
                               ><ion-icon

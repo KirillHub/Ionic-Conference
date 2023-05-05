@@ -7,6 +7,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { RandomColorPipe } from "../../shared/pipes/colorRandomizer.pipe";
 import { UserDetailsPageRoutingModule } from "./user-details-routing.module";
 import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-route-btn.module";
+import { PipeModule } from "../../shared/pipes/pipe.module";
 
 @NgModule({
   imports: [
@@ -15,8 +16,9 @@ import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-
     HttpClientModule,
     UserDetailsPageRoutingModule,
     BackRouteBtnModule,
+    PipeModule,
   ],
-  declarations: [UsersDetailsPage, RandomColorPipe],
+  declarations: [UsersDetailsPage],
   providers: [],
 })
 export class UserDetailsModule {}

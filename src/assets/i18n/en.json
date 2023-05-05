@@ -11,10 +11,15 @@
   "insert_user_picture_link": "Insert user picture link",
   "insert_user_description": "Insert user description",
 
-
   "user_name_missed_error": "User name missed error",
+  "user_email_missed_error": "User email missed error",
+  "user_city_missed_error": "User city missed error",
+  "user_country_missed_error": "User country missed error",
+  "user_phone_missed_error": "User phone missed error",
   "user_gender_missed_error": "User gender missed error",
   "user_picture_missed_error": "User picture missed error",
 
-  "sure_want_delete_company": "Sure want delete company?"
+  "sure_want_delete_company": "Sure want delete company?",
+  "back_to_the_users_cards": "Back to the users cards",
+  "sure_want_back_to_users_cards": "Sure want back to the users cards?"
 }

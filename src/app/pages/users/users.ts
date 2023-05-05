@@ -1,28 +1,6 @@
-import {
-  map,
-  switchMap,
-  filter,
-  tap,
-  count,
-  combineLatestAll,
-} from "rxjs/operators";
-import {
-  AfterViewInit,
-  Component,
-  HostListener,
-  OnDestroy,
-  OnInit,
-} from "@angular/core";
-import {
-  combineLatest,
-  firstValueFrom,
-  Observable,
-  of,
-  pipe,
-  concat,
-  Subscription,
-  Subject,
-} from "rxjs";
+import { map, switchMap, filter, tap, takeUntil } from "rxjs/operators";
+import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
+import { combineLatest, Observable, of, pipe, concat, Subject } from "rxjs";
 import { UserService } from "../../services/user.service";
 import { UserResult } from "../../interfaces/user-profile";
 import { ionicColors } from "../../shared/utils/constants/constants";
@@ -31,6 +9,8 @@ import { TranslateService } from "@ngx-translate/core";
 import { AlertService } from "../../services/alert.service";
 import { LoaderService } from "../../services/loader.service";
 import { userDescription } from "../../shared/utils/constants/userDescr";
+import { NavigationEnd, Router } from "@angular/router";
+import { isEqual } from "../../shared/utils/equal";
 
 @Component({
   selector: "users-data",
@@ -38,31 +18,71 @@ import { userDescription } from "../../shared/utils/constants/userDescr";
   styleUrls: ["./users.scss"],
 })
 export class UsersPage implements OnInit, OnDestroy {
-  private destroyed = new Subject<any>();
+  private destroyed$ = new Subject<any>();
 
-  usersDataStream$: Observable<UserResult[]> = of([]);
+  isUsersExtistInStorage: boolean;
   isUsersLoad: boolean;
-  usersDataFromApiRequest$: Observable<UserResult[]> = of([]);
-  usersData: UserResult[] = [];
   colors = ionicColors;
-  combinedUserData: UserResult[];
+  combinedUserData: UserResult[] = [];
 
   constructor(
     private loadUserData: UserService,
     private userDataService: UserDataStorageService,
     private translate: TranslateService,
     private alertService: AlertService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private router: Router
   ) {}
 
   @HostListener("window:beforeunload", ["$event"])
   ngOnDestroy(): void {
-    this.destroyed.next(null);
-    this.destroyed.complete();
+    this.destroyed$.next(null);
+    this.destroyed$.complete();
   }
 
   ngOnInit() {
-    this.setAndLoadUserData().subscribe();
+    this.isUsersDataAlreadyExist();
+
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(() => {
+        this.isUsersDataAlreadyExist();
+      });
+  }
+
+  isUsersDataAlreadyExist() {
+    return combineLatest([
+      this.userDataService.getUsersData(),
+      of(this.combinedUserData),
+    ])
+      .pipe(
+        map(([usersData, prevUsersData]) => {
+          const isPrevUsersDataEqualWithCurrent = isEqual(
+            prevUsersData,
+            usersData
+          );
+          if (!isPrevUsersDataEqualWithCurrent) {
+            this.combinedUserData = usersData;
+          }
+          console.log(this.combinedUserData);
+          return usersData;
+        }),
+        switchMap((usersData) => {
+          if (usersData.length !== 0) {
+            return of(usersData);
+          } else {
+            return this.setAndLoadUserData().pipe(
+              tap((usersData) => (this.combinedUserData = usersData)),
+              map(() => this.combinedUserData)
+            );
+          }
+        }),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe();
   }
 
   getUserDataFromApiRequest() {
@@ -108,7 +128,7 @@ export class UsersPage implements OnInit, OnDestroy {
     this.preventDefaultSettings(event);
     const isConfirmTrue = await this.openConfirmDeleteCompanyAlert();
     if (isConfirmTrue) {
-      await this.removeUserFromStorage(userId);
+      this.removeUserFromStorage(userId);
 
       this.combinedUserData.splice(userId, 1);
       this.combinedUserData = this.combinedUserData.map((user, i) => ({
@@ -132,12 +152,15 @@ export class UsersPage implements OnInit, OnDestroy {
     this.userDataService.userSelectedId.next(userId);
   }
 
-  async removeUserFromStorage(userId: number) {
-    this.userDataService.removeUserById(userId).subscribe();
+  removeUserFromStorage(userId: number) {
+    this.userDataService
+      .removeUserById(userId)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe();
   }
 
   onRefreshClick() {
-    return this.setAndLoadUserData().subscribe();
+    this.setAndLoadUserData().pipe(takeUntil(this.destroyed$)).subscribe();
   }
 
   onToggleMoreInfo(event: Event, userId: number) {
