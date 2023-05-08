@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AddEditShippingDestinationModule } from "../../shared/components/add-edit-shipping-destination/add-edit-shipping-destination.module";
 import { IonicSelectableModule } from "@ionic-selectable/angular";
 import { PipeModule } from "../../shared/pipes/pipe.module";
+import { SearchLineModule } from "../../shared/components/search-line/search-line.module";
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { PipeModule } from "../../shared/pipes/pipe.module";
     ReactiveFormsModule,
     IonicSelectableModule,
     AddEditShippingDestinationModule,
-    PipeModule
+    PipeModule,
+    SearchLineModule,
   ],
   declarations: [UsersPage],
   providers: [NavigationService, TranslateService],

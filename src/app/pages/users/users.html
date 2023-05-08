@@ -24,6 +24,15 @@
     </ion-toolbar>
   </ion-header>
 
+  <search-line
+    *ngIf="combinedUserData"
+    [dataKeys]="combinedUserData[0]"
+    [filteredKeys]="filteredUserKeys"
+    (ionInput)="inputOnChange($event)"
+    (selectedValue)="onSelectedValue($event)"
+  >
+  </search-line>
+
   <ion-loading [showBackdrop]="true" [duration]="3000" [hidden]="isUsersLoad">
     <ion-content>
       <ion-item>

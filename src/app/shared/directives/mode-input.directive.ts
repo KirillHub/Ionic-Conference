@@ -21,6 +21,11 @@ export class ModeInputDirective {
         pattern = /^[-?0-9]+/;
         break;
       }
+
+      case "searchLine": {
+        pattern = /^[a-zA-Z0-9.,!?@ ]*$/;
+        break;
+      }
     }
 
     let result = pattern.test(event.key);

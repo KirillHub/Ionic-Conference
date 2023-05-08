@@ -11,6 +11,8 @@ import { LoaderService } from "../../services/loader.service";
 import { userDescription } from "../../shared/utils/constants/userDescr";
 import { NavigationEnd, Router } from "@angular/router";
 import { isEqual } from "../../shared/utils/equal";
+import { PopoverController } from "@ionic/angular";
+import { SearchLineComponent } from "../../shared/components/search-line/search-line";
 
 @Component({
   selector: "users-data",
@@ -23,7 +25,13 @@ export class UsersPage implements OnInit, OnDestroy {
   isUsersExtistInStorage: boolean;
   isUsersLoad: boolean;
   colors = ionicColors;
-  combinedUserData: UserResult[] = [];
+  memoUsersData: any;
+  combinedUserData: UserResult[];
+
+  filteredUserKeys = ["isOpenMoreUserInfo", "id"];
+  searchTerm: string;
+  selectedValue: string;
+  // userKeys: UserResult[];
 
   constructor(
     private loadUserData: UserService,
@@ -31,6 +39,7 @@ export class UsersPage implements OnInit, OnDestroy {
     private translate: TranslateService,
     private alertService: AlertService,
     private loaderService: LoaderService,
+    private popoverController: PopoverController,
     private router: Router
   ) {}
 
@@ -53,6 +62,14 @@ export class UsersPage implements OnInit, OnDestroy {
       });
   }
 
+  /*
+  setUserKeys(val: UserResult[]) {
+    return (this.userKeys = Object.keys(val[0]).filter(
+      (k, _) => k !== "isOpenMoreUserInfo" && k !== "id"
+    ));
+  }
+*/
+
   isUsersDataAlreadyExist() {
     return combineLatest([
       this.userDataService.getUsersData(),
@@ -66,6 +83,8 @@ export class UsersPage implements OnInit, OnDestroy {
           );
           if (!isPrevUsersDataEqualWithCurrent) {
             this.combinedUserData = usersData;
+            this.memoUsersData = this.combinedUserData; // !
+            // this.setUserKeys(this.combinedUserData);
           }
           console.log(this.combinedUserData);
           return usersData;
@@ -76,7 +95,12 @@ export class UsersPage implements OnInit, OnDestroy {
           } else {
             return this.setAndLoadUserData().pipe(
               tap((usersData) => (this.combinedUserData = usersData)),
-              map(() => this.combinedUserData)
+              map(() => {
+                console.log("HERE 2 ");
+                this.memoUsersData = this.combinedUserData; // !
+                // this.setUserKeys(this.combinedUserData);
+                return this.combinedUserData;
+              })
             );
           }
         }),
@@ -95,6 +119,7 @@ export class UsersPage implements OnInit, OnDestroy {
         data.map((user) => ({
           ...user,
           description: userDescription,
+          isOpenMoreUserInfo: false,
         }))
       ),
       switchMap((data: UserResult[]) => this.userDataService.setUsersData(data))
@@ -102,15 +127,11 @@ export class UsersPage implements OnInit, OnDestroy {
   }
 
   loadUserDataFromStorage() {
-    return this.userDataService.getUsersData().pipe(
-      tap((userData: UserResult[]) =>
-        userData.forEach(
-          (mergedUserData: UserResult) =>
-            (mergedUserData.isOpenMoreUserInfo = false)
-        )
-      ),
-      map((userData: UserResult[]) => (this.combinedUserData = userData))
-    );
+    return this.userDataService
+      .getUsersData()
+      .pipe(
+        map((userData: UserResult[]) => (this.combinedUserData = userData))
+      );
   }
 
   setAndLoadUserData(): Observable<UserResult[]> {
@@ -165,7 +186,51 @@ export class UsersPage implements OnInit, OnDestroy {
 
   onToggleMoreInfo(event: Event, userId: number) {
     this.preventDefaultSettings(event);
+
     this.combinedUserData[userId].isOpenMoreUserInfo =
       !this.combinedUserData[userId].isOpenMoreUserInfo;
   }
+
+  onSelectedValue(value: string) {
+    this.selectedValue = value;
+    console.log("Selected value:", value);
+  }
+
+  inputOnChange(event: any) {
+    // this.memoUsersData = this.combinedUserData;
+    this.combinedUserData = [...this.memoUsersData];
+
+    const value = event.target.value.toLowerCase();
+
+    if (value) {
+      this.combinedUserData = this.combinedUserData.filter((user) =>
+        Object.values(user).some((val) =>
+          val.toString().toLowerCase().includes(value)
+        )
+      );
+      /*
+      else {
+      this.isUsersDataAlreadyExist();
+      // this.memoUsersData = this.combinedUserData;
+    }
+      */
+      // this.combinedUserData = this.memoUsersData;
+    }
+  }
+
+  /*
+  TODO: вспомогательная строка для поиска
+  async presentPopover(ev: any) {
+    console.log(ev);
+    const popover = await this.popoverController.create({
+      component: SearchLineComponent,
+      event: ev,
+      translucent: true,
+    });
+    await popover.present();
+
+    const { data } = await popover.onWillDismiss();
+    console.log(data);
+  }
+*/
 }

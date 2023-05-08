@@ -13,8 +13,8 @@ interface Picture {
 }
 
 export interface UserResult {
-  city? : string,
-  country? : string,
+  city?: string;
+  country?: string;
   id: number;
   gender: string;
   name: string;

@@ -6,15 +6,7 @@ import {
   switchMap,
   exhaustMap,
 } from "rxjs/operators";
-import {
-  Observable,
-  of,
-  pipe,
-  Subject,
-  firstValueFrom,
-  lastValueFrom,
-  Subscription,
-} from "rxjs";
+import { Observable, of, pipe, Subject, Subscription } from "rxjs";
 import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import {
   ActivatedRoute,
@@ -96,7 +88,7 @@ export class AddEditUserPage implements OnInit, OnDestroy {
 
   initializeForm() {
     this.userDataForm = this.formBuilder.group({
-      userId: this.userId,
+      id: this.userId,
       name: ["", Validators.required],
       email: ["", Validators.required],
       city: ["", Validators.required],
@@ -164,7 +156,6 @@ export class AddEditUserPage implements OnInit, OnDestroy {
             city: location.city || "",
             country: location.country || "",
           };
-          console.log(dataObject);
           return dataObject;
         }),
 
@@ -175,7 +166,7 @@ export class AddEditUserPage implements OnInit, OnDestroy {
   }
 
   async onSave() {
-    const formData = this.userDataForm.getRawValue();
+    const formData: UserResult = this.userDataForm.getRawValue();
     const formError = this.userDataForm.errors;
     const isValidationForm = this.userDataForm.valid;
 
@@ -191,6 +182,8 @@ export class AddEditUserPage implements OnInit, OnDestroy {
         picture,
       } = formData;
 
+      const pic = picture as unknown as string;
+
       if (this.isUserId) {
         this.userDataService
           .getUsersData()
@@ -204,12 +197,13 @@ export class AddEditUserPage implements OnInit, OnDestroy {
                         city: city,
                         country: country,
                       },
+                      isOpenMoreUserInfo: false,
                       description: description,
                       email: email,
                       gender: gender,
                       name: name,
                       phone: phone,
-                      picture: { large: picture },
+                      picture: { large: pic },
                     })
                   : userData
               )
@@ -228,34 +222,44 @@ export class AddEditUserPage implements OnInit, OnDestroy {
             takeUntil(this.destroyed$)
           )
           .subscribe();
-        const isConfirmTrue = await this.openConfirmBackToUserCardsAlert();
-        if (isConfirmTrue) {
-          this.router.navigateByUrl("/app/tabs/users");
-        }
       } else {
-        console.log("on add user");
-        //TODO; implement to add new user!
-        /*
         this.userDataService
-        .getUsersData()
-        .pipe(
-          switchMap((userData) => {
-            const addedUserId = userData.length + 1;
-            formData.id = addedUserId;
-            userData.push(formData);
-            return this.userDataService.setUsersData(userData)
-          })
-        )
-      */
+          .getUsersData()
+          .pipe(
+            switchMap((userData) => {
+              let mergedFormData = formData;
+              const addedUserId = userData.length;
+
+              mergedFormData = {
+                ...mergedFormData,
+                id: addedUserId,
+                location: {
+                  city: mergedFormData.city,
+                  country: mergedFormData.country,
+                },
+                isOpenMoreUserInfo: false,
+                picture: { large: pic },
+              };
+
+              userData.push(mergedFormData);
+              return this.userDataService.setUsersData(userData);
+            }),
+            takeUntil(this.destroyed$)
+          )
+          .subscribe();
+      }
+      const isConfirmTrue = await this.openConfirmBackToUserCardsAlert();
+      if (isConfirmTrue) {
+        this.router.navigateByUrl("/app/tabs/users");
       }
     }
-
-    console.log(formData);
   }
 
   async openConfirmBackToUserCardsAlert() {
     const header = this.translate.instant("back_to_the_users_cards");
-    const message = this.translate.instant("sure_want_back_to_users_cards");
+    const message = this.translate.instant(
+      "sure_want_to_save_and_back_to_users_cards"
+    );
     const confirm = await this.alertService.confirmationPopup(header, message);
     return confirm ? true : false;
   }
