@@ -11,7 +11,7 @@ import { ErrorService } from "./error.service";
 })
 export class ProductsService {
   public apiUrl = apiLinks.productApi;
-  productsCount = 10;
+  public category = "category";
 
   headers = new HttpHeaders({
     "Content-Type": "application/json",
@@ -19,30 +19,41 @@ export class ProductsService {
 
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
-  getProducts(): Observable<Product[]> {
+  getProducts(limit: number): Observable<Product[]> {
     const url = `${this.apiUrl}`;
 
-    return (
-      this.http
-        .get<Product[]>(url, {
-          headers: this.headers,
-          params: new HttpParams().append("limit", this.productsCount),
-        })
-        /*
-  implement some logic:
+    return this.http
+      .get<Product[]>(url, {
+        headers: this.headers,
+        params: new HttpParams().append("limit", limit.toString()),
+      })
+
       .pipe(
-        map((d) => {
-          console.log(d);
-          return d;
+        catchError((error: unknown) => {
+          this.errorService.handle(error);
+          return throwError(() => error);
         })
-      )
- */
-        .pipe(
-          catchError((error: unknown) => {
-            this.errorService.handle(error);
-            return throwError(() => error);
-          })
-        )
-    );
+      );
+  }
+
+  getProductsByCategory(
+    category: string,
+    limit: number
+  ): Observable<Product[]> {
+    const url = `${this.apiUrl}/${this.category}/${category}`;
+
+    return this.http
+      .get<Product[]>(url, {
+        params: {
+          category,
+          limit: limit.toString(),
+        },
+      })
+      .pipe(
+        catchError((error: unknown) => {
+          this.errorService.handle(error);
+          return throwError(() => error);
+        })
+      );
   }
 }

@@ -21,5 +21,11 @@
 
   "sure_want_delete_company": "Sure want delete company?",
   "back_to_the_users_cards": "Back to the users cards",
-  "sure_want_to_save_and_back_to_users_cards": "Sure want to save and back to the users cards?"
+  "sure_want_to_save_and_back_to_users_cards": "Sure want to save and back to the users cards?",
+
+  "product_category": "Product category",
+  "select_product_category": "Select product category",
+  "product_category_missed_error": "Product category is required"
+
+
 }

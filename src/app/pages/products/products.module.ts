@@ -7,6 +7,8 @@ import { TranslateModule } from "@ngx-translate/core";
 import { BackRouteBtnModule } from "../../shared/components/back-route-btn/back-route-btn.module";
 import { ProductsPage } from "./products";
 import { ProductsPageRoutingModule } from "./products-routing.module";
+import { IonicSelectableModule } from "ionic-selectable";
+import { SearchLineModule } from "../../shared/components/search-line/search-line.module";
 
 @NgModule({
   imports: [
@@ -17,6 +19,8 @@ import { ProductsPageRoutingModule } from "./products-routing.module";
     TranslateModule,
     BackRouteBtnModule,
     ProductsPageRoutingModule,
+    IonicSelectableModule,
+    SearchLineModule
   ],
   declarations: [ProductsPage],
 })

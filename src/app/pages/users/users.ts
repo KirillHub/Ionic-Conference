@@ -25,7 +25,7 @@ export class UsersPage implements OnInit, OnDestroy {
   isUsersExtistInStorage: boolean;
   isUsersLoad: boolean;
   colors = ionicColors;
-  memoUsersData: any;
+  memoUsersData: UserResult[];
   combinedUserData: UserResult[];
 
   filteredUserKeys = ["isOpenMoreUserInfo", "id"];
@@ -208,13 +208,6 @@ export class UsersPage implements OnInit, OnDestroy {
           val.toString().toLowerCase().includes(value)
         )
       );
-      /*
-      else {
-      this.isUsersDataAlreadyExist();
-      // this.memoUsersData = this.combinedUserData;
-    }
-      */
-      // this.combinedUserData = this.memoUsersData;
     }
   }
 

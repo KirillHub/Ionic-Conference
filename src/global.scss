@@ -66,3 +66,32 @@
   width: 100%;
   height: 25px;
 }
+
+form ion-item ion-input,
+ion-select,
+ion-datetime,
+ion-textarea,
+ionic-selectable {
+  margin-top: 8px;
+
+  padding: 5px !important;
+
+  border: 1px solid #a9a9a9;
+}
+
+.item-interactive ionic-selectable.ng-invalid.ng-touched {
+  border-color: var(--ion-color-danger) !important;
+}
+
+form ion-item ion-select,
+form ion-item ionic-selectable {
+  padding: 8px !important;
+}
+
+form ion-item ion-input,
+form ion-item ion-select,
+form ion-item ion-datetime,
+form ion-item ion-textarea,
+form ion-item ionic-selectable {
+  background: #ffffff !important;
+}

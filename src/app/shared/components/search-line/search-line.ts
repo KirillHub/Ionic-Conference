@@ -18,7 +18,7 @@ import { setObjectKeys } from "../../utils/getObjectKeys";
 export class SearchLineComponent implements OnInit {
   searchTerm: string;
   userDataKeys: string[];
-   items: string[] = ['Item 1', 'Item 2', 'Item 3'];
+  items: string[] = ['Item 1', 'Item 2', 'Item 3']; // test with support search-line
 
   @Input() dataKeys: UserResult[];
   @Input() filteredKeys: string[];
@@ -27,11 +27,10 @@ export class SearchLineComponent implements OnInit {
   constructor(private popoverController: PopoverController) {}
 
   ngOnInit(): void {
-    this.setUserKeys();
+   if (this.filteredKeys)  this.setUserKeys();
   }
 
   selectItem(item: string){
-    console.log(item);
     this.popoverController.dismiss(item);
   }
 
